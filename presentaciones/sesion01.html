@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sesión 1: Encuadre y Contrato Pedagógico | Lenguajes y Autómatas II</title>
+  <style>
+    :root {
+      --bg: #f4f8fb;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-bg-hover: rgba(255, 255, 255, 0.98);
+      --border: #d0dbe5;
+      --border-focus: #0969da;
+      --accent: #0969da;
+      --accent-green: #1a7f37;
+      --accent-silver: #627282;
+      --text: #334155;
+      --text-bright: #0f172a;
+      --font-mono: 'Fira Code', 'Courier New', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(9, 105, 218, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(98, 114, 130, 0.05) 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 h40 v40 h40 v-20 h20 M60 0 v20 M100 60 v40 h-40 v20 M20 80 h20 v20' fill='none' stroke='%2394a3b8' stroke-width='1' stroke-opacity='0.22' stroke-dasharray='4,4'/%3E%3Ccircle cx='40' cy='60' r='3' fill='%23627282' fill-opacity='0.3'/%3E%3Ccircle cx='80' cy='40' r='3' fill='%230969da' fill-opacity='0.3'/%3E%3Ccircle cx='60' cy='100' r='2.5' fill='%23627282' fill-opacity='0.3'/%3E%3Ccircle cx='20' cy='80' r='2.5' fill='%230969da' fill-opacity='0.3'/%3E%3Crect x='56' y='16' width='8' height='8' fill='%2394a3b8' fill-opacity='0.25' rx='1'/%3E%3C/svg%3E");
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .brand {
+      font-weight: 700;
+      color: var(--text-bright);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+
+    .tag {
+      background-color: #ddf4ff;
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      border: 1px solid #b6e3ff;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 30px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(30px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      color: var(--text-bright);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      color: var(--text-bright);
+      margin-bottom: 16px;
+    }
+
+    p.lead {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      max-width: 900px;
+      margin-bottom: 18px;
+      color: #475569;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      background: var(--card-bg-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(9, 105, 218, 0.08);
+    }
+
+    .card.expanded {
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(9, 105, 218, 0.12);
+    }
+
+    .card-header {
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    .expand-hint {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-weight: 500;
+    }
+
+    .card p, .card li {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .card-details {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.2s ease;
+      font-size: 0.82rem;
+      color: #475569;
+      border-top: 1px dashed transparent;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .card.expanded .card-details {
+      max-height: 240px;
+      opacity: 1;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top-color: var(--border);
+    }
+
+    .code-block {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.4;
+      margin-top: 8px;
+      overflow-x: auto;
+      border: 1px solid #334155;
+    }
+
+    .interactive-box {
+      margin-top: 18px;
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    footer {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .progress {
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background-color: #ffffff;
+      color: var(--text-bright);
+      border: 1px solid var(--border);
+      padding: 7px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    button:hover {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">TecNM Cancún &bull; SCD-1016</div>
+    <div class="tag">SESIÓN 01 / 40 &bull; ENCUADRE</div>
+  </header>
+
+  <main>
+    <!-- Slide 1: Portada y Misión -->
+    <section class="slide active">
+      <div class="tag" style="width: fit-content; margin-bottom: 10px;">SCD-1016 &bull; LENGUAJES Y AUTÓMATAS II</div>
+      <h1>Construcción de Compiladores: Del Artesano al Auditor</h1>
+      <p class="lead">Bienvenido al curso intensivo de 8 semanas. Diseñaremos y construiremos la arquitectura interna de un procesador de lenguaje completo, desde el análisis semántico hasta el binario ejecutable.</p>
+      
+      <div class="grid-3">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent);">01. 100% en la Nube</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Cero fricción de instalación local. Flujo interactivo en Google Colab y portafolio en GitHub Web.</p>
+          <div class="card-details">
+            Trabajarás desde cualquier computadora o dispositivo sin configurar compiladores locales; todo se ejecuta y compila en máquinas virtuales de la nube.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-silver);">02. Laboratorios</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Prácticas en lenguaje <strong>C</strong> como base oficial, con track alternativo disponible en <strong>Rust</strong>.</p>
+          <div class="card-details">
+            Podrás explorar la manipulación de registros y memoria en C, o experimentar la seguridad estricta y los tipos algebraicos modernos de Rust.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-green);">03. Copiloto IA</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Uso guiado de LLMs con prompting avanzado y auditoría crítica de código.</p>
+          <div class="card-details">
+            No evaluamos si sabes escribir sintaxis de memoria, sino tu capacidad de detectar fallos y alucinaciones en el código generado por la IA.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 2: La Dinámica Diaria -->
+    <section class="slide">
+      <h2>Estructura de la Sesión Diaria (60 Minutos)</h2>
+      <p class="lead">Un esquema equilibrado entre concepto interactivo, desarrollo de intuición técnica y auditoría asistida.</p>
+      
+      <div class="grid-3">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>00–20 min: Estudio Inicial</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Presentación interactiva en vivo. Planteamiento del reto formal y casos límite en compiladores.</p>
+          <div class="card-details">
+            Discutiremos el problema formal del día (ej. resolución de tipos o saltos en cuádruplos) para que entiendas la meta antes de tirar una sola línea de código.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>20–35 min: El Artesano</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Codificación manual en Colab <strong>sin IA</strong> para enfrentarse a la lógica del algoritmo.</p>
+          <div class="card-details">
+            15 minutos de experimentación pura para forjar intuición y toparnos con la complejidad real del problema antes de pedir ayuda.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>35–60 min: Auditoría IA</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Prompting con el LLM, detección de fallos y sincronización directa a GitHub.</p>
+          <div class="card-details">
+            Alimentamos a la IA con nuestro intento, auditamos la respuesta, corregimos casos borde y registramos el commit final.
+          </div>
+        </div>
+      </div>
+
+      <div class="interactive-box">
+        <strong>Protocolo de Entrega:</strong> Cada práctica en GitHub debe incluir el prompt empleado y el reporte del error o caso límite que la IA ignoró.
+      </div>
+    </section>
+
+    <!-- Slide 3: Arquitectura y Evaluación -->
+    <section class="slide">
+      <h2>Ecosistema y Ponderación del Curso</h2>
+      <div class="grid-2">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Ponderación Oficial</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <ul>
+            <li><strong>40% Laboratorios Diarios:</strong> Cuadernos en Colab con bitácora.</li>
+            <li><strong>30% Proyecto Integrador:</strong> Compilador modular funcional.</li>
+            <li><strong>20% Evaluaciones de Unidad:</strong> 4 hitos prácticos integradores.</li>
+            <li><strong>10% Participación:</strong> Sesiones síncronas en MS Teams.</li>
+          </ul>
+          <div class="card-details">
+            La evaluación es formativa y continua; valoramos el proceso de diseño y la solidez de las pruebas más que la simple entrega de archivos.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Plataformas Obligatorias</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <ul>
+            <li><strong>MS Teams:</strong> Aula virtual y grabaciones diarias.</li>
+            <li><strong>Moodle TecNM:</strong> Registro de calificaciones y enlaces.</li>
+            <li><strong>Google Colab:</strong> Entorno de ejecución en la nube.</li>
+            <li><strong>GitHub:</strong> Repositorio personal (Fork) de evidencias.</li>
+          </ul>
+          <div class="card-details">
+            Solo necesitas tu navegador web. Todo el historial y portafolio técnico quedará respaldado en tu cuenta personal de GitHub.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: El Reto de Hoy -->
+    <section class="slide">
+      <h2>Laboratorio de Hoy: Verificación de Entorno</h2>
+      <p class="lead">Sigue estos pasos en tu navegador para preparar tu repositorio personal e iniciar las prácticas en la nube.</p>
+      
+      <div class="grid-2">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent);">Paso 1: Fork en GitHub Web</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Crea tu copia de trabajo 100% en el navegador (sin terminal local):</p>
+          <div class="code-block">
+1. Entra a: github.com/ijmarquezl/tecnm-compiladores<br>
+2. Clic en el botón "Fork" (arriba a la derecha)<br>
+3. Clic en el botón verde "Create fork"<br>
+4. Abre README.md &rarr; Ícono Lápiz &rarr; Pon tu nombre<br>
+5. Clic en "Commit changes..." para guardar
+          </div>
+          <div class="card-details">
+            Una vez creado tu Fork, solo darás clic en el botón <strong>"Open in Colab"</strong> dentro de tu propio repositorio para trabajar directamente en la nube.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-green);">Paso 2: Comprobación de Compilador</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>En tu cuaderno de Google Colab ejecuta las celdas de prueba:</p>
+          <div class="code-block">
+%%writefile test.c<br>
+#include &lt;stdio.h&gt;<br>
+int main() {<br>
+&nbsp;&nbsp;printf("Compilador C listo en Colab\n");<br>
+&nbsp;&nbsp;return 0;<br>
+}<br>
+!gcc test.c -o test &amp;&amp; ./test
+          </div>
+          <div class="card-details">
+            <strong>Track Rust:</strong> Ejecuta <code>!rustc --version</code> y prueba una celda con <code>fn main() { println!("Rust OK"); }</code>.
+          </div>
+        </div>
+      </div>
+
+      <div class="interactive-box">
+        <code>$ Repositorio maestro: github.com/ijmarquezl/tecnm-compiladores &bull; Entorno listo.</code>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="progress" id="slideIndicator">SLIDE 1 / 4</div>
+    <div class="controls">
+      <button id="prevBtn" onclick="prevSlide()" disabled>&larr; Anterior</button>
+      <button id="nextBtn" onclick="nextSlide()">Siguiente &rarr;</button>
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const indicator = document.getElementById('slideIndicator');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateSlides() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+      });
+      indicator.textContent = `SLIDE ${currentSlide + 1} / ${slides.length}`;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlides();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlides();
+      }
+    }
+
+    function toggleCard(cardElement) {
+      cardElement.classList.toggle('expanded');
+      const hint = cardElement.querySelector('.expand-hint');
+      if (hint) {
+        hint.textContent = cardElement.classList.contains('expanded') ? '[- info]' : '[+ info]';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+  </script>
+</body>
+</html>
