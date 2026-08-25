@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sesión 2: Taller de Fork y Gestión en GitHub Web | Lenguajes y Autómatas II</title>
+  <style>
+    :root {
+      --bg: #f4f8fb;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-bg-hover: rgba(255, 255, 255, 0.98);
+      --border: #d0dbe5;
+      --border-focus: #0969da;
+      --accent: #0969da;
+      --accent-green: #1a7f37;
+      --accent-silver: #627282;
+      --text: #334155;
+      --text-bright: #0f172a;
+      --font-mono: 'Fira Code', 'Courier New', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(9, 105, 218, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(98, 114, 130, 0.05) 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 h40 v40 h40 v-20 h20 M60 0 v20 M100 60 v40 h-40 v20 M20 80 h20 v20' fill='none' stroke='%2394a3b8' stroke-width='1' stroke-opacity='0.22' stroke-dasharray='4,4'/%3E%3Ccircle cx='40' cy='60' r='3' fill='%23627282' fill-opacity='0.3'/%3E%3Ccircle cx='80' cy='40' r='3' fill='%230969da' fill-opacity='0.3'/%3E%3Ccircle cx='60' cy='100' r='2.5' fill='%23627282' fill-opacity='0.3'/%3E%3Ccircle cx='20' cy='80' r='2.5' fill='%230969da' fill-opacity='0.3'/%3E%3Crect x='56' y='16' width='8' height='8' fill='%2394a3b8' fill-opacity='0.25' rx='1'/%3E%3C/svg%3E");
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .brand {
+      font-weight: 700;
+      color: var(--text-bright);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+
+    .tag {
+      background-color: #ddf4ff;
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      border: 1px solid #b6e3ff;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 30px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(30px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      color: var(--text-bright);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      color: var(--text-bright);
+      margin-bottom: 16px;
+    }
+
+    p.lead {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      max-width: 900px;
+      margin-bottom: 18px;
+      color: #475569;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      background: var(--card-bg-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(9, 105, 218, 0.08);
+    }
+
+    .card.expanded {
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(9, 105, 218, 0.12);
+    }
+
+    .card-header {
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    .expand-hint {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-weight: 500;
+    }
+
+    .card p, .card li {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .card-details {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.2s ease;
+      font-size: 0.82rem;
+      color: #475569;
+      border-top: 1px dashed transparent;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .card.expanded .card-details {
+      max-height: 240px;
+      opacity: 1;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top-color: var(--border);
+    }
+
+    .code-block {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.4;
+      margin-top: 8px;
+      overflow-x: auto;
+      border: 1px solid #334155;
+    }
+
+    .interactive-box {
+      margin-top: 18px;
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    footer {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .progress {
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background-color: #ffffff;
+      color: var(--text-bright);
+      border: 1px solid var(--border);
+      padding: 7px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    button:hover {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">TecNM Cancún &bull; SCD-1016</div>
+    <div class="tag">SESIÓN 02 / 40 &bull; CONTROL DE VERSIONES</div>
+  </header>
+
+  <main>
+    <!-- Slide 1: Portada y Concepto de Fork -->
+    <section class="slide active">
+      <div class="tag" style="width: fit-content; margin-bottom: 10px;">GESTIÓN EN LA NUBE &bull; GIT &amp; GITHUB</div>
+      <h1>Arquitectura de Repositorios: Upstream vs. Fork</h1>
+      <p class="lead">El desarrollo moderno de software e ingeniería de compiladores se basa en flujos de trabajo desacoplados. Hoy dominaremos cómo aislar tu espacio de desarrollo personal sin romper el código base oficial.</p>
+      
+      <div class="grid-3">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent);">01. Upstream (Maestro)</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Repositorio central del docente (<code>ijmarquezl/lenguajes-automatas-2</code>). Es la fuente de la verdad.</p>
+          <div class="card-details">
+            Los alumnos tienen permisos de solo lectura para evitar alteraciones accidentales; todas las actualizaciones oficiales provienen de aquí.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-silver);">02. Tu Fork Personal</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Tu propia copia en la nube (<code>TU_USUARIO/lenguajes-automatas-2</code>) con permisos de control total.</p>
+          <div class="card-details">
+            Aquí modificas código, creas cuadernillos y subes tus bitácoras de auditoría de IA sin afectar a nadie más.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-green);">03. Sync Automático</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Sincronización con un solo clic mediante el botón <strong>"Sync fork"</strong> en la web.</p>
+          <div class="card-details">
+            Cuando el profesor publique una nueva sesión, no necesitas clonar nada: solo sincronizas tu copia desde la interfaz web.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 2: Anatomía de un Commit y Markdown -->
+    <section class="slide">
+      <h2>Documentación Técnica con Markdown</h2>
+      <p class="lead">Los ingenieros de compiladores no entregan archivos de texto plano desordenados; estructuran especificaciones formales legibles por humanos y máquinas.</p>
+      
+      <div class="grid-3">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Encabezados y Jerarquía</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Uso estricto de <code>#</code>, <code>##</code> y <code>###</code> para separar secciones lógicas.</p>
+          <div class="card-details">
+            Permite la navegación automática por índice y la correcta indexación de reportes de auditoría.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Bloques de Código</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Bloques delimitados con triple tilde inversa y resaltado de sintaxis (<code>```c</code>, <code>```rust</code>).</p>
+          <div class="card-details">
+            Fundamental para documentar el código generado por la IA en tus bitácoras de auditoría.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Mensajes de Commit Claros</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Convención semántica: <code>feat:</code>, <code>fix:</code>, <code>docs:</code>.</p>
+          <div class="card-details">
+            Ejemplo: <code>docs: alta de bitacora sesion 02</code>. Evita mensajes genéricos como "cambios" o "tarea".
+          </div>
+        </div>
+      </div>
+
+      <div class="interactive-box">
+        <strong>Estándar de Calidad:</strong> Todo commit debe reflejar una unidad atómica de trabajo con un mensaje descriptivo.
+      </div>
+    </section>
+
+    <!-- Slide 3: El Flujo de Trabajo en la Nube -->
+    <section class="slide">
+      <h2>Ciclo de Trabajo Diario en 4 Pasos</h2>
+      <div class="grid-2">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Paso A: Sincronizar Fork</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Antes de iniciar la clase, verifica si tu repositorio está al día con el repositorio maestro.</p>
+          <div class="card-details">
+            Ve a la página de tu fork en GitHub; si dice "This branch is behind", presiona <strong>Sync fork &rarr; Update branch</strong>.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Paso B: Documentar Auditoría</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Crea tu bitácora en la carpeta <code>auditorias/</code> utilizando la plantilla oficial.</p>
+          <div class="card-details">
+            Documenta tu prompt, la respuesta del modelo y tu análisis de seguridad o rendimiento.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: El Reto de Hoy -->
+    <section class="slide">
+      <h2>Laboratorio de Hoy: Personalización y Primera Bitácora</h2>
+      <p class="lead">Sigue estos pasos en la web para consolidar la estructura de tu portafolio personal.</p>
+      
+      <div class="grid-2">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent);">Paso 1: Edición Web de README</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Edita tu perfil de alumno en tu repositorio:</p>
+          <div class="code-block">
+1. Entra a tu fork: github.com/TU_USUARIO/lenguajes-automatas-2<br>
+2. Abre README.md y haz clic en el Lápiz (Edit)<br>
+3. Llena tu Nombre, Matrícula y Track (C o Rust)<br>
+4. Commit message: "docs: actualizacion perfil alumno"<br>
+5. Clic en "Commit changes..."
+          </div>
+          <div class="card-details">
+            Comprueba que los cambios se rendericen correctamente con formato enriquecido en la portada.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-green);">Paso 2: Crear Bitácora Sesión 02</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Crea el archivo de auditoría directamente en la web:</p>
+          <div class="code-block">
+1. Clic en "Add file" &rarr; "Create new file"<br>
+2. Nombre: auditorias/auditoria_sesion02.md<br>
+3. Pega el contenido de la plantilla de auditoría<br>
+4. Llena tus respuestas sobre el reto de memoria<br>
+5. Commit: "feat: bitacora de auditoria sesion 02"
+          </div>
+          <div class="card-details">
+            GitHub creará automáticamente la carpeta <code>auditorias/</code> al incluir la diagonal en el nombre del archivo.
+          </div>
+        </div>
+      </div>
+
+      <div class="interactive-box">
+        <code>$ git log &bull; Historial limpio &bull; Repositorio listo para el Árbol de Sintaxis Abstracta (AST).</code>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="progress" id="slideIndicator">SLIDE 1 / 4</div>
+    <div class="controls">
+      <button id="prevBtn" onclick="prevSlide()" disabled>&larr; Anterior</button>
+      <button id="nextBtn" onclick="nextSlide()">Siguiente &rarr;</button>
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const indicator = document.getElementById('slideIndicator');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateSlides() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+      });
+      indicator.textContent = `SLIDE ${currentSlide + 1} / ${slides.length}`;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlides();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlides();
+      }
+    }
+
+    function toggleCard(cardElement) {
+      cardElement.classList.toggle('expanded');
+      const hint = cardElement.querySelector('.expand-hint');
+      if (hint) {
+        hint.textContent = cardElement.classList.contains('expanded') ? '[- info]' : '[+ info]';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+  </script>
+</body>
+</html>
