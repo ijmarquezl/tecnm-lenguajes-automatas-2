@@ -34,3 +34,7 @@ Repositorio experimental y base pedagógica para el curso de **Lenguajes y Autó
 ├── presentaciones/
 │   └── sesion01.html             # Diapositivas interactivas en HTML5
 └── README.md                     # Guía general e insignias de acceso directo
+
+## Licencia
+* El código fuente de laboratorios y utilidades está bajo la [Licencia MIT](LICENSE).
+* El material didáctico, notas y presentaciones están bajo la licencia [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
