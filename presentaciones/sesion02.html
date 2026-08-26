@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sesión 2: Taller de Fork y Gestión en GitHub Web | Lenguajes y Autómatas II</title>
+  <title>Sesión 2: Taller de Fork y Memoria Dinámica | Lenguajes y Autómatas II</title>
   <style>
     :root {
       --bg: #f4f8fb;
@@ -14,6 +14,7 @@
       --accent: #0969da;
       --accent-green: #1a7f37;
       --accent-silver: #627282;
+      --accent-orange: #d29922;
       --text: #334155;
       --text-bright: #0f172a;
       --font-mono: 'Fira Code', 'Courier New', monospace;
@@ -113,6 +114,12 @@
       max-width: 900px;
       margin-bottom: 18px;
       color: #475569;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
     }
 
     .grid-3 {
@@ -271,176 +278,221 @@
 
   <header>
     <div class="brand">TecNM Cancún &bull; SCD-1016</div>
-    <div class="tag">SESIÓN 02 / 40 &bull; CONTROL DE VERSIONES</div>
+    <div class="tag">SESIÓN 02 / 40 &bull; NODOS Y SINCRONIZACIÓN</div>
   </header>
 
   <main>
-    <!-- Slide 1: Portada y Concepto de Fork -->
+    <!-- Slide 1: Portada y Concepto de Nodos Dinámicos -->
     <section class="slide active">
-      <div class="tag" style="width: fit-content; margin-bottom: 10px;">GESTIÓN EN LA NUBE &bull; GIT &amp; GITHUB</div>
-      <h1>Arquitectura de Repositorios: Upstream vs. Fork</h1>
-      <p class="lead">El desarrollo moderno de software e ingeniería de compiladores se basa en flujos de trabajo desacoplados. Hoy dominaremos cómo aislar tu espacio de desarrollo personal sin romper el código base oficial.</p>
+      <div class="tag" style="width: fit-content; margin-bottom: 10px;">ANÁLISIS SINTÁCTICO &bull; ESTRUCTURAS EN HEAP</div>
+      <h1>Nodos Dinámicos y Sincronización de Repositorio</h1>
+      <p class="lead">Todo compilador modela el código fuente como grafos y árboles en el <em>Heap</em>. Hoy dominamos la construcción segura de nodos en memoria y el flujo de sincronización web con el upstream.</p>
       
       <div class="grid-3">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span style="color: var(--accent);">01. Upstream (Maestro)</span>
+            <span style="color: var(--accent);">01. Sincronización Web</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Repositorio central del docente (<code>ijmarquezl/lenguajes-automatas-2</code>). Es la fuente de la verdad.</p>
+          <p>Mantén tu Fork al día con el repositorio maestro usando el botón <strong>"Sync fork"</strong> en GitHub.</p>
           <div class="card-details">
-            Los alumnos tienen permisos de solo lectura para evitar alteraciones accidentales; todas las actualizaciones oficiales provienen de aquí.
+            Cada nueva práctica publicada por el docente se integra a tu copia en segundos sin necesidad de terminal local.
           </div>
         </div>
 
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span style="color: var(--accent-silver);">02. Tu Fork Personal</span>
+            <span style="color: var(--accent-silver);">02. Nodos en Heap</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Tu propia copia en la nube (<code>TU_USUARIO/lenguajes-automatas-2</code>) con permisos de control total.</p>
+          <p>Reserva dinámica (`malloc` en C / `Box` en Rust) para instanciar tokens y hojas del AST.</p>
           <div class="card-details">
-            Aquí modificas código, creas cuadernillos y subes tus bitácoras de auditoría de IA sin afectar a nadie más.
+            Aprenderás a evitar fugas de memoria (<em>Memory Leaks</em>) y punteros colgantes (<em>Dangling Pointers</em>).
           </div>
         </div>
 
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span style="color: var(--accent-green);">03. Sync Automático</span>
+            <span style="color: var(--accent-green);">03. Tríada Científica</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Sincronización con un solo clic mediante el botón <strong>"Sync fork"</strong> en la web.</p>
+          <p>De la liberación manual al diseño de contratos C-R-E-O y pruebas de estrés de memoria.</p>
           <div class="card-details">
-            Cuando el profesor publique una nueva sesión, no necesitas clonar nada: solo sincronizas tu copia desde la interfaz web.
+            Auditarás si el código de la IA gestiona de forma segura el fin de cadena y la liberación encadenada.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 2: Anatomía de un Commit y Markdown -->
+    <!-- Slide 2: El Reto de la Memoria Dinámica -->
     <section class="slide">
-      <h2>Documentación Técnica con Markdown</h2>
-      <p class="lead">Los ingenieros de compiladores no entregan archivos de texto plano desordenados; estructuran especificaciones formales legibles por humanos y máquinas.</p>
+      <h2>00–20 min: Estudio Inicial — El Ciclo de Vida del Nodo</h2>
+      <p class="lead">En C, la memoria no se autogestiona; en Rust, el compilador aplica el modelo RAII y Borrow Checker.</p>
       
       <div class="grid-3">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span>Encabezados y Jerarquía</span>
+            <span>Asignación Segura</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Uso estricto de <code>#</code>, <code>##</code> y <code>###</code> para separar secciones lógicas.</p>
+          <p>Verificación obligatoria de punteros nulos tras `malloc()`.</p>
           <div class="card-details">
-            Permite la navegación automática por índice y la correcta indexación de reportes de auditoría.
+            Si el sistema operativo se queda sin memoria, `malloc` retorna `NULL`. Desreferenciarlo causa un <em>Crash</em> fatal.
           </div>
         </div>
 
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span>Bloques de Código</span>
+            <span>El Riesgo de Use-After-Free</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Bloques delimitados con triple tilde inversa y resaltado de sintaxis (<code>```c</code>, <code>```rust</code>).</p>
+          <p>Liberar un nodo antes de guardar la referencia al siguiente rompe la lista enlazada.</p>
           <div class="card-details">
-            Fundamental para documentar el código generado por la IA en tus bitácoras de auditoría.
+            Al hacer `free(actual)`, el puntero `actual->siguiente` queda en un segmento de memoria inválido.
           </div>
         </div>
 
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span>Mensajes de Commit Claros</span>
+            <span>La Alternativa en Rust</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Convención semántica: <code>feat:</code>, <code>fix:</code>, <code>docs:</code>.</p>
+          <p>Uso de tipos inteligentes como `Option<Box<Token>>`.</p>
           <div class="card-details">
-            Ejemplo: <code>docs: alta de bitacora sesion 02</code>. Evita mensajes genéricos como "cambios" o "tarea".
+            Rust garantiza por diseño que no existan punteros nulos ni fugas de memoria al salir de ámbito.
           </div>
         </div>
       </div>
 
       <div class="interactive-box">
-        <strong>Estándar de Calidad:</strong> Todo commit debe reflejar una unidad atómica de trabajo con un mensaje descriptivo.
+        <strong>Invariante de Diseño:</strong> Nunca accedas a un miembro de una estructura después de haber invocado `free()` sobre ella.
       </div>
     </section>
 
-    <!-- Slide 3: El Flujo de Trabajo en la Nube -->
+    <!-- Slide 3: Prompt Engineering C-R-E-O para la Sesión 2 -->
     <section class="slide">
-      <h2>Ciclo de Trabajo Diario en 4 Pasos</h2>
-      <div class="grid-2">
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header">
-            <span>Paso A: Sincronizar Fork</span>
-            <span class="expand-hint">[+ info]</span>
-          </div>
-          <p>Antes de iniciar la clase, verifica si tu repositorio está al día con el repositorio maestro.</p>
-          <div class="card-details">
-            Ve a la página de tu fork en GitHub; si dice "This branch is behind", presiona <strong>Sync fork &rarr; Update branch</strong>.
-          </div>
-        </div>
-
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header">
-            <span>Paso B: Documentar Auditoría</span>
-            <span class="expand-hint">[+ info]</span>
-          </div>
-          <p>Crea tu bitácora en la carpeta <code>auditorias/</code> utilizando la plantilla oficial.</p>
-          <div class="card-details">
-            Documenta tu prompt, la respuesta del modelo y tu análisis de seguridad o rendimiento.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Slide 4: El Reto de Hoy -->
-    <section class="slide">
-      <h2>Laboratorio de Hoy: Personalización y Primera Bitácora</h2>
-      <p class="lead">Sigue estos pasos en la web para consolidar la estructura de tu portafolio personal.</p>
+      <h2>Fase 2: El Científico — Especificación de Nodos con C-R-E-O</h2>
+      <p class="lead">Estructura tu requerimiento para que el LLM diseñe rutinas seguras de asignación y liberación encadenada.</p>
       
-      <div class="grid-2">
+      <div class="grid-4">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span style="color: var(--accent);">Paso 1: Edición Web de README</span>
-            <span class="expand-hint">[+ info]</span>
+            <span style="color: var(--accent);">C &bull; Contexto</span>
+            <span class="expand-hint">[+]</span>
           </div>
-          <p>Edita tu perfil de alumno en tu repositorio:</p>
-          <div class="code-block">
-1. Entra a tu fork: github.com/TU_USUARIO/lenguajes-automatas-2<br>
-2. Abre README.md y haz clic en el Lápiz (Edit)<br>
-3. Llena tu Nombre, Matrícula y Track (C o Rust)<br>
-4. Commit message: "docs: actualizacion perfil alumno"<br>
-5. Clic en "Commit changes..."
-          </div>
+          <p>Estructura de lista enlazada simple para tokens de compilador en C99 o Rust 2021.</p>
           <div class="card-details">
-            Comprueba que los cambios se rendericen correctamente con formato enriquecido en la portada.
+            Memoria dinámica sobre el Heap, manejo estricto de buffers de texto `char lexema[32]`.
           </div>
         </div>
 
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span style="color: var(--accent-green);">Paso 2: Crear Bitácora Sesión 02</span>
-            <span class="expand-hint">[+ info]</span>
+            <span style="color: var(--accent-silver);">R &bull; Rol</span>
+            <span class="expand-hint">[+]</span>
           </div>
-          <p>Crea el archivo de auditoría directamente en la web:</p>
-          <div class="code-block">
-1. Clic en "Add file" &rarr; "Create new file"<br>
-2. Nombre: auditorias/auditoria_sesion02.md<br>
-3. Pega el contenido de la plantilla de auditoría<br>
-4. Llena tus respuestas sobre el reto de memoria<br>
-5. Commit: "feat: bitacora de auditoria sesion 02"
-          </div>
+          <p>Ingeniero de sistemas y seguridad de memoria.</p>
           <div class="card-details">
-            GitHub creará automáticamente la carpeta <code>auditorias/</code> al incluir la diagonal en el nombre del archivo.
+            "Actúa como un desarrollador senior de software de sistemas enfocado en evitar fugas de memoria".
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-orange);">E &bull; Especificación</span>
+            <span class="expand-hint">[+]</span>
+          </div>
+          <p>Funciones `crear_token()`, `insertar_final()` y `liberar_lista()`.</p>
+          <div class="card-details">
+            Manejo de listas vacías, prevención de Use-After-Free y copia segura con `strncpy` asegurando terminador `\0`.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-green);">O &bull; Output</span>
+            <span class="expand-hint">[+]</span>
+          </div>
+          <p>Código fuente modular sin dependencias externas.</p>
+          <div class="card-details">
+            Únicamente las implementaciones de las funciones y el análisis de complejidad espacial $O(n)$.
           </div>
         </div>
       </div>
 
       <div class="interactive-box">
-        <code>$ git log &bull; Historial limpio &bull; Repositorio listo para el Árbol de Sintaxis Abstracta (AST).</code>
+        <code>Prompt Modelo: "Rol: Experto en C. Contexto: Lista enlazada de tokens. Especificación: Liberar lista sin use-after-free y validar malloc==NULL. Output: Solo funciones C."</code>
+      </div>
+    </section>
+
+    <!-- Slide 4: El Flujo Diario de GitHub Web -->
+    <section class="slide">
+      <h2>Gestión del Repositorio Personal en GitHub Web</h2>
+      <div class="grid-2">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Sincronizar Fork (Sync Fork)</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>1. Ve a tu repositorio: <code>github.com/TU_USUARIO/tecnm-lenguajes-automatas-2</code>.<br>
+             2. Si aparece el aviso "This branch is behind", haz clic en <strong>Sync fork &rarr; Update branch</strong>.</p>
+          <div class="card-details">
+            Esto trae a tu repositorio la Sesión 02 y las nuevas plantillas sin sobrescribir tus bitácoras existentes.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span>Crear la Bitácora de Sesión 02</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>1. Copia el contenido de <code>plantillas/auditoria_sesion02.md</code>.<br>
+             2. Clic en <strong>Add file &rarr; Create new file</strong>.<br>
+             3. Nómbralo <code>auditorias/auditoria_sesion02.md</code> y guarda tu commit.</p>
+          <div class="card-details">
+            Toda tu carpeta <code>auditorias/</code> servirá como evidencia acumulativa para la evaluación de la Unidad 1.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: El Reto de Hoy -->
+    <section class="slide">
+      <h2>Laboratorio de Hoy: Lista de Tokens y Test Harness</h2>
+      <p class="lead">Sigue el flujo de trabajo en Google Colab para completar la práctica 02.</p>
+      
+      <div class="grid-2">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent);">Fase 1: El Artesano</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Abre el cuaderno de la Sesión 02 y resuelve a mano la liberación de nodos sin perder la referencia al apuntador siguiente.</p>
+          <div class="card-details">
+            Experimenta el uso de variables puntero auxiliares (`Token *aux = actual->siguiente;`) antes de invocar `free()`.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-green);">Fases 2 y 3: Científico &amp; Auditor</span>
+            <span class="expand-hint">[+ info]</span>
+          </div>
+          <p>Diseña tu prompt C-R-E-O, pega la solución del LLM y corre el <strong>Test Harness</strong> que verifica liberación sobre listas vacías y listas de $N$ nodos.</p>
+          <div class="card-details">
+            Registra en tu bitácora si el código de la IA previene fallos cuando se intenta liberar una lista con cabeza `NULL`.
+          </div>
+        </div>
+      </div>
+
+      <div class="interactive-box">
+        <code>$ Repositorio sincronizado con upstream &bull; Test Harness ejecutado en verde en Colab.</code>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="progress" id="slideIndicator">SLIDE 1 / 4</div>
+    <div class="progress" id="slideIndicator">SLIDE 1 / 5</div>
     <div class="controls">
       <button id="prevBtn" onclick="prevSlide()" disabled>&larr; Anterior</button>
       <button id="nextBtn" onclick="nextSlide()">Siguiente &rarr;</button>
@@ -481,7 +533,7 @@
       cardElement.classList.toggle('expanded');
       const hint = cardElement.querySelector('.expand-hint');
       if (hint) {
-        hint.textContent = cardElement.classList.contains('expanded') ? '[- info]' : '[+ info]';
+        hint.textContent = cardElement.classList.contains('expanded') ? '[-]' : '[+]';
       }
     }
 
