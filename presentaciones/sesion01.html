@@ -115,6 +115,12 @@
       color: #475569;
     }
 
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -278,8 +284,8 @@
     <!-- Slide 1: Portada y Misión -->
     <section class="slide active">
       <div class="tag" style="width: fit-content; margin-bottom: 10px;">SCD-1016 &bull; LENGUAJES Y AUTÓMATAS II</div>
-      <h1>Construcción de Compiladores: Del Artesano al Auditor</h1>
-      <p class="lead">Bienvenido al curso intensivo de 8 semanas. Diseñaremos y construiremos la arquitectura interna de un procesador de lenguaje completo, desde el análisis semántico hasta el binario ejecutable.</p>
+      <h1>Construcción de Compiladores: La Tríada Metodológica</h1>
+      <p class="lead">Bienvenido al curso intensivo de 8 semanas. Diseñaremos y construiremos la arquitectura interna de un procesador de lenguaje desde el análisis semántico hasta el binario ejecutable.</p>
       
       <div class="grid-3">
         <div class="card" onclick="toggleCard(this)">
@@ -289,7 +295,7 @@
           </div>
           <p>Cero fricción de instalación local. Flujo interactivo en Google Colab y portafolio en GitHub Web.</p>
           <div class="card-details">
-            Trabajarás desde cualquier computadora o dispositivo sin configurar compiladores locales; todo se ejecuta y compila en máquinas virtuales de la nube.
+            Trabajarás desde cualquier navegador sin configurar compiladores locales; todo se ejecuta en máquinas virtuales remotas.
           </div>
         </div>
 
@@ -300,18 +306,18 @@
           </div>
           <p>Prácticas en lenguaje <strong>C</strong> como base oficial, con track alternativo disponible en <strong>Rust</strong>.</p>
           <div class="card-details">
-            Podrás explorar la manipulación de registros y memoria en C, o experimentar la seguridad estricta y los tipos algebraicos modernos de Rust.
+            Manipulación de registros y memoria en C, o seguridad estricta y tipos algebraicos en Rust.
           </div>
         </div>
 
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span style="color: var(--accent-green);">03. Copiloto IA</span>
+            <span style="color: var(--accent-green);">03. Tríada Científica</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Uso guiado de LLMs con prompting avanzado y auditoría crítica de código.</p>
+          <p>Evolución guiada: <strong>El Artesano</strong> &rarr; <strong>El Científico</strong> &rarr; <strong>El Auditor</strong>.</p>
           <div class="card-details">
-            No evaluamos si sabes escribir sintaxis de memoria, sino tu capacidad de detectar fallos y alucinaciones en el código generado por la IA.
+            Aprenderás a formalizar contratos técnicos, diseñar prompts rigurosos y someter a la IA a pruebas de estrés.
           </div>
         </div>
       </div>
@@ -320,7 +326,7 @@
     <!-- Slide 2: La Dinámica Diaria -->
     <section class="slide">
       <h2>Estructura de la Sesión Diaria (60 Minutos)</h2>
-      <p class="lead">Un esquema equilibrado entre concepto interactivo, desarrollo de intuición técnica y auditoría asistida.</p>
+      <p class="lead">Un balance estructurado entre fundamentación conceptual, intuición manual y auditoría técnica.</p>
       
       <div class="grid-3">
         <div class="card" onclick="toggleCard(this)">
@@ -328,9 +334,9 @@
             <span>00–20 min: Estudio Inicial</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Presentación interactiva en vivo. Planteamiento del reto formal y casos límite en compiladores.</p>
+          <p>Presentación interactiva en vivo. Planteamiento del problema formal y casos límite en compiladores.</p>
           <div class="card-details">
-            Discutiremos el problema formal del día (ej. resolución de tipos o saltos en cuádruplos) para que entiendas la meta antes de tirar una sola línea de código.
+            Discutiremos el reto formal del día (resolución de tipos, cuádruplos o marcos de pila) antes de programar.
           </div>
         </div>
 
@@ -339,30 +345,86 @@
             <span>20–35 min: El Artesano</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Codificación manual en Colab <strong>sin IA</strong> para enfrentarse a la lógica del algoritmo.</p>
+          <p>Codificación manual en Colab <strong>sin IA</strong> para experimentar la complejidad real del algoritmo.</p>
           <div class="card-details">
-            15 minutos de experimentación pura para forjar intuición y toparnos con la complejidad real del problema antes de pedir ayuda.
+            15 minutos de experimentación pura para forjar intuición y toparnos con los límites del lenguaje y la memoria.
           </div>
         </div>
 
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span>35–60 min: Auditoría IA</span>
+            <span>35–60 min: El Científico y El Auditor</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>Prompting con el LLM, detección de fallos y sincronización directa a GitHub.</p>
+          <p>Ingeniería de requerimientos, diseño de prompts contextualizados y verificación destructiva.</p>
           <div class="card-details">
-            Alimentamos a la IA con nuestro intento, auditamos la respuesta, corregimos casos borde y registramos el commit final.
+            Construimos el contrato formal, consultamos al LLM con un prompt estructurado y auditamos con Test Harness.
           </div>
         </div>
       </div>
 
       <div class="interactive-box">
-        <strong>Protocolo de Entrega:</strong> Cada práctica en GitHub debe incluir el prompt empleado y el reporte del error o caso límite que la IA ignoró.
+        <strong>Protocolo de Entrega:</strong> Cada práctica requiere su bitácora en <code>auditorias/</code> con la matriz de requerimientos y el reporte de pruebas.
       </div>
     </section>
 
-    <!-- Slide 3: Arquitectura y Evaluación -->
+    <!-- Slide 3: Prompt Engineering y Requerimientos (NUEVA) -->
+    <section class="slide">
+      <h2>Fase 2: El Científico — Ingeniería de Requerimientos y Prompts</h2>
+      <p class="lead">No le "pedimos favores" a la IA; le suministramos especificaciones formales basadas en el modelo <strong>C-R-E-O</strong>.</p>
+      
+      <div class="grid-4">
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent);">C &bull; Contexto</span>
+            <span class="expand-hint">[+]</span>
+          </div>
+          <p>Entorno de ejecución y restricciones de memoria.</p>
+          <div class="card-details">
+            Define la arquitectura (x86-64), estándar (C99/Rust 2021) y límites (sin `malloc`, sin bibliotecas externas).
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-silver);">R &bull; Rol</span>
+            <span class="expand-hint">[+]</span>
+          </div>
+          <p>Postura técnica esperada del modelo de lenguaje.</p>
+          <div class="card-details">
+            "Actúa como un compilista y especialista en seguridad de memoria de bajo nivel".
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-orange);">E &bull; Especificación</span>
+            <span class="expand-hint">[+]</span>
+          </div>
+          <p>Precondiciones, postcondiciones y casos borde.</p>
+          <div class="card-details">
+            Explicita el manejo de `NULL`, búferes vacíos `""`, longitudes pares/impares y complejidad $O(n)$ tiempo / $O(1)$ espacio.
+          </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header">
+            <span style="color: var(--accent-green);">O &bull; Output</span>
+            <span class="expand-hint">[+]</span>
+          </div>
+          <p>Formato exacto de la respuesta sin ruido.</p>
+          <div class="card-details">
+            Exige únicamente el bloque de código de la función sin preámbulos, junto con el análisis de casos límite.
+          </div>
+        </div>
+      </div>
+
+      <div class="interactive-box">
+        <code>Prompt Modelo: "Rol: Experto en C. Contexto: GCC C99 sin malloc. Especificación: Invertir char* in-place validando NULL y ''. Output: Solo código."</code>
+      </div>
+    </section>
+
+    <!-- Slide 4: Arquitectura y Evaluación -->
     <section class="slide">
       <h2>Ecosistema y Ponderación del Curso</h2>
       <div class="grid-2">
@@ -372,13 +434,13 @@
             <span class="expand-hint">[+ info]</span>
           </div>
           <ul>
-            <li><strong>40% Laboratorios Diarios:</strong> Cuadernos en Colab con bitácora.</li>
-            <li><strong>30% Proyecto Integrador:</strong> Compilador modular funcional.</li>
+            <li><strong>40% Laboratorios Diarios:</strong> Cuadernos en Colab con bitácoras en GitHub.</li>
+            <li><strong>30% Proyecto Integrador:</strong> Compilador modular End-to-End.</li>
             <li><strong>20% Evaluaciones de Unidad:</strong> 4 hitos prácticos integradores.</li>
             <li><strong>10% Participación:</strong> Sesiones síncronas en MS Teams.</li>
           </ul>
           <div class="card-details">
-            La evaluación es formativa y continua; valoramos el proceso de diseño y la solidez de las pruebas más que la simple entrega de archivos.
+            Evaluamos la solidez de tu arquitectura y la rigurosidad de tus auditorías, no la simple memorización de sintaxis.
           </div>
         </div>
 
@@ -389,21 +451,21 @@
           </div>
           <ul>
             <li><strong>MS Teams:</strong> Aula virtual y grabaciones diarias.</li>
-            <li><strong>Moodle TecNM:</strong> Registro de calificaciones y enlaces.</li>
+            <li><strong>Moodle TecNM:</strong> Registro de calificaciones y entrega de enlaces.</li>
             <li><strong>Google Colab:</strong> Entorno de ejecución en la nube.</li>
-            <li><strong>GitHub:</strong> Repositorio personal (Fork) de evidencias.</li>
+            <li><strong>GitHub:</strong> Repositorio personal (Fork) como portafolio.</li>
           </ul>
           <div class="card-details">
-            Solo necesitas tu navegador web. Todo el historial y portafolio técnico quedará respaldado en tu cuenta personal de GitHub.
+            Todo el historial de desarrollo y auditorías quedará respaldado en tu cuenta personal de GitHub.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 4: El Reto de Hoy -->
+    <!-- Slide 5: El Reto de Hoy -->
     <section class="slide">
-      <h2>Laboratorio de Hoy: Verificación de Entorno</h2>
-      <p class="lead">Sigue estos pasos en tu navegador para preparar tu repositorio personal e iniciar las prácticas en la nube.</p>
+      <h2>Laboratorio de Hoy: Verificación de Entorno y Memoria</h2>
+      <p class="lead">Sigue estos pasos en tu navegador para preparar tu repositorio personal e iniciar la práctica 01.</p>
       
       <div class="grid-2">
         <div class="card" onclick="toggleCard(this)">
@@ -420,27 +482,25 @@
 5. Clic en "Commit changes..." para guardar
           </div>
           <div class="card-details">
-            Una vez creado tu Fork, solo darás clic en el botón <strong>"Open in Colab"</strong> dentro de tu propio repositorio para trabajar directamente en la nube.
+            Una vez creado tu Fork, darás clic en el botón <strong>"Open in Colab"</strong> dentro de tu repositorio para trabajar en la nube.
           </div>
         </div>
 
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header">
-            <span style="color: var(--accent-green);">Paso 2: Comprobación de Compilador</span>
+            <span style="color: var(--accent-green);">Paso 2: Laboratorio y Test Harness</span>
             <span class="expand-hint">[+ info]</span>
           </div>
-          <p>En tu cuaderno de Google Colab ejecuta las celdas de prueba:</p>
+          <p>Ejecuta la práctica 01 en Google Colab:</p>
           <div class="code-block">
-%%writefile test.c<br>
-#include &lt;stdio.h&gt;<br>
-int main() {<br>
-&nbsp;&nbsp;printf("Compilador C listo en Colab\n");<br>
-&nbsp;&nbsp;return 0;<br>
-}<br>
-!gcc test.c -o test &amp;&amp; ./test
+1. Ejecuta el Paso 0 para verificar gcc/rustc<br>
+2. Resuelve el reto manual (El Artesano)<br>
+3. Diseña tu prompt formal C-R-E-O (El Científico)<br>
+4. Ejecuta el Test Harness de pruebas (El Auditor)<br>
+5. Llena plantillas/auditoria_sesion01.md
           </div>
           <div class="card-details">
-            <strong>Track Rust:</strong> Ejecuta <code>!rustc --version</code> y prueba una celda con <code>fn main() { println!("Rust OK"); }</code>.
+            Comprueba que todas las pruebas unitarias pasen en verde antes de sincronizar tu bitácora a GitHub.
           </div>
         </div>
       </div>
@@ -452,7 +512,7 @@ int main() {<br>
   </main>
 
   <footer>
-    <div class="progress" id="slideIndicator">SLIDE 1 / 4</div>
+    <div class="progress" id="slideIndicator">SLIDE 1 / 5</div>
     <div class="controls">
       <button id="prevBtn" onclick="prevSlide()" disabled>&larr; Anterior</button>
       <button id="nextBtn" onclick="nextSlide()">Siguiente &rarr;</button>
@@ -493,7 +553,7 @@ int main() {<br>
       cardElement.classList.toggle('expanded');
       const hint = cardElement.querySelector('.expand-hint');
       if (hint) {
-        hint.textContent = cardElement.classList.contains('expanded') ? '[- info]' : '[+ info]';
+        hint.textContent = cardElement.classList.contains('expanded') ? '[-]' : '[+]';
       }
     }
 
