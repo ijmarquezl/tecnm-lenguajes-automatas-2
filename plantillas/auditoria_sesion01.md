@@ -31,16 +31,17 @@ Completa el contrato formal antes de redactar tu prompt:
 
 ```text
 [Pega tu prompt con Rol, Contexto de memoria, Especificación y Restricciones explícitas]
-
+```
 ## 3. Código devuelto por el modelo
-*Pega aquí el fragmento de código generado por el LLM
+*Pega aquí el fragmento de código generado por el LLM:*
+```code
 C
-
+```
 ## 4. Fase 3: El Auditor (Batería de Pruebas y Veredicto)
 
 ### 4.1 Resultados del Test Harness
 Indica si el código generado superó las pruebas de estrés ejecutadas en Colab:
-
+```text
 [ ] Puntero Nulo (NULL): ¿Sobrevive sin Segmentation Fault?
 
 [ ] Cadena vacía (""): ¿Mantiene el terminador nulo sin alterar memoria?
@@ -48,10 +49,11 @@ Indica si el código generado superó las pruebas de estrés ejecutadas en Colab
 [ ] Cadena de 1 caracter ("A"): ¿Evita cruces inválidos de punteros?
 
 [ ] Longitud Par e Impar ("AB", "ABC"): ¿Invierte correctamente todos los índices?
-
+```
 ### 4.2 Reporte Crítico y Correcciones
 ¿Qué caso límite o problema de arquitectura omitió la IA y cómo lo solucionaste en tu versión final?
-
+```text
 (Describe tu análisis y corrección aquí).
 
 Firma digital: [Usuario de GitHub]
+```
