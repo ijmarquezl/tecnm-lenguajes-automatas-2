@@ -3,27 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sesión 10: Hito 1: Mini-Evaluador de Expresiones | Lenguajes y Autómatas II</title>
+  <title>Sesión 10: Hito 1: Mini-Evaluador de Expresiones y AST Completo | Lenguajes y Autómatas II</title>
   <style>
     :root {
-      --bg: #f4f8fb; --card-bg: rgba(255, 255, 255, 0.88); --card-bg-hover: rgba(255, 255, 255, 0.98);
-      --border: #d0dbe5; --border-focus: #0969da; --accent: #0969da; --accent-green: #1a7f37;
-      --accent-silver: #627282; --text: #334155; --text-bright: #0f172a; --font-mono: 'Fira Code', monospace;
+      --bg: #f4f8fb;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-bg-hover: rgba(255, 255, 255, 0.98);
+      --border: #d0dbe5;
+      --border-focus: #0969da;
+      --accent: #0969da;
+      --accent-green: #1a7f37;
+      --accent-silver: #627282;
+      --accent-orange: #d29922;
+      --text: #334155;
+      --text-bright: #0f172a;
+      --font-mono: 'Fira Code', monospace;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-    header { padding: 12px 28px; background: rgba(255, 255, 255, 0.85); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .brand { font-weight: 700; color: var(--text-bright); font-size: 0.95rem; }
-    .tag { background-color: #ddf4ff; color: var(--accent); padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-family: var(--font-mono); font-weight: 600; }
+    .tag {
+      background-color: #ddf4ff;
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      border: 1px solid #b6e3ff;
+    }
     main { flex: 1; display: flex; position: relative; overflow: hidden; }
-    .slide { position: absolute; inset: 0; padding: 30px 60px; display: flex; flex-direction: column; justify-content: center; opacity: 0; visibility: hidden; transform: translateX(30px); transition: all 0.3s ease; }
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 30px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(30px);
+      transition: all 0.3s ease;
+    }
     .slide.active { opacity: 1; visibility: visible; transform: translateX(0); }
     h1 { font-size: 2rem; color: var(--text-bright); margin-bottom: 12px; }
     h2 { font-size: 1.5rem; color: var(--text-bright); margin-bottom: 16px; }
     p.lead { font-size: 1.05rem; line-height: 1.5; max-width: 900px; margin-bottom: 18px; color: #475569; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
     .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 18px; cursor: pointer; transition: all 0.25s ease; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
     .card:hover { background: var(--card-bg-hover); border-color: var(--border-focus); transform: translateY(-2px); }
     .card.expanded { border-color: var(--accent); background: #ffffff; }
     .card-header { font-weight: 600; color: var(--text-bright); margin-bottom: 8px; display: flex; justify-content: space-between; }
@@ -31,11 +85,35 @@
     .card p, .card li { font-size: 0.88rem; line-height: 1.45; color: var(--text); }
     .card-details { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease; font-size: 0.82rem; color: #475569; }
     .card.expanded .card-details { max-height: 240px; opacity: 1; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
-    .interactive-box { margin-top: 18px; padding: 14px 18px; background: #ffffff; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; }
-    footer { padding: 12px 28px; background: rgba(255, 255, 255, 0.85); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .interactive-box {
+      margin-top: 18px;
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    footer {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.85);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .progress { font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600; }
     .controls { display: flex; gap: 10px; }
-    button { background: #ffffff; color: var(--text-bright); border: 1px solid var(--border); padding: 7px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    button {
+      background: #ffffff;
+      color: var(--text-bright);
+      border: 1px solid var(--border);
+      padding: 7px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
     button:hover { background: #f1f5f9; }
     button:disabled { opacity: 0.4; cursor: not-allowed; }
   </style>
@@ -43,49 +121,110 @@
 <body>
   <header>
     <div class="brand">TecNM Cancún &bull; SCD-1016</div>
-    <div class="tag">SESIÓN 10 / 40 &bull; Hito 1: Mini-Evaluador de Expresiones</div>
+    <div class="tag">SESIÓN 10 / 40 &bull; Hito 1: Mini-Evaluador de Expresiones y AST Completo</div>
   </header>
+
   <main>
+    <!-- Slide 1: Portada y Propósito -->
     <section class="slide active">
-      <div class="tag" style="width: fit-content; margin-bottom: 10px;">LENGUAJES Y AUTÓMATAS II</div>
-      <h1>Hito 1: Mini-Evaluador de Expresiones</h1>
-      <p class="lead">Sesión 10 del curso. Aplicación del protocolo de compiladores con la Tríada Metodológica.</p>
+      <div class="tag" style="width: fit-content; margin-bottom: 10px;">UNIDAD 1: ANÁLISIS SEMÁNTICO Y AST</div>
+      <h1>Hito 1: Mini-Evaluador de Expresiones y AST Completo</h1>
+      <p class="lead">Sesión 10 del curso. Exploración conceptual, diseño de estructuras en memoria y auditoría técnica mediante la Tríada Metodológica.</p>
       <div class="grid-3">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span style="color: var(--accent);">01. El Artesano</span><span class="expand-hint">[+]</span></div>
-          <p>Codificación manual sin IA: <strong>Integración AST y Tipado Estático</strong>.</p>
-          <div class="card-details">Desarrolla la intuición técnica de bajo nivel y comprende el comportamiento de memoria antes de consultar modelos.</div>
+          <p>Codificación manual sin IA para experimentar las restricciones de bajo nivel del compilador.</p>
+          <div class="card-details">Desarrolla intuición técnica de punteros, registros y manejo de memoria dinámica.</div>
         </div>
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span style="color: var(--accent-silver);">02. El Científico</span><span class="expand-hint">[+]</span></div>
-          <p>Especificación C-R-E-O: <strong>Contrato formal de Frontend Semántico</strong>.</p>
-          <div class="card-details">Define el contrato formal de pre/postcondiciones y estructura el prompt técnico para el LLM.</div>
+          <p>Formalización de especificaciones técnicas mediante el contrato estructurado C-R-E-O.</p>
+          <div class="card-details">Define precondiciones, postcondiciones e invariantes formales antes de consultar al LLM.</div>
         </div>
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span style="color: var(--accent-green);">03. El Auditor</span><span class="expand-hint">[+]</span></div>
-          <p>Test Harness Automatizado: <strong>Batería de 10 expresiones mixtas complejas</strong>.</p>
-          <div class="card-details">Somete la solución generada por la IA a pruebas destructivas y registra la auditoría crítica en GitHub.</div>
+          <p>Batería de pruebas automatizadas (*Test Harness*) para detectar fallos y fugas de memoria.</p>
+          <div class="card-details">Somete el código de la IA a pruebas destructivas y registra la bitácora en GitHub.</div>
         </div>
       </div>
     </section>
+
+    <!-- Slide 2: Fundamentos Teóricos -->
     <section class="slide">
-      <h2>Dinámica de la Sesión y Entregables</h2>
+      <h2>00–20 min: Fundamentos Teóricos — Integración del Frontend Semántico del Compilador</h2>
+      <p class="lead">Culminación de la Unidad 1. Conexión completa: Escaneo de tokens, construcción del AST, chequeo estático y reporte de tipos.</p>
+      <div class="grid-3">
+        
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent);">01. Pipeline del Frontend</span><span class="expand-hint">[+]</span></div>
+          <p>Flujo unificado: `Código Fuente -> Tokens -> AST -> Verificación Semántica -> Evaluación Estática`.</p>
+          <div class="card-details">Base estructural sobre la cual se construirán las siguientes unidades del compilador.</div>
+        </div>
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent);">02. Verificación de Invariantes</span><span class="expand-hint">[+]</span></div>
+          <p>El AST resultante debe ser acíclico, con tipos consistentes en todos sus nodos y sin fugas en Heap.</p>
+          <div class="card-details">Se audita automáticamente mediante la suite completa de pruebas unitarias.</div>
+        </div>
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent);">03. Entrega de Hito 1 (Git Tag)</span><span class="expand-hint">[+]</span></div>
+          <p>Etiquetado formal de versión en el repositorio del estudiante: `git tag v0.1-hito1`.</p>
+          <div class="card-details">Representa el 20% del Proyecto Integrador Semestral.</div>
+        </div>
+      </div>
+      <div class="interactive-box">
+        <strong>Invariante Conceptual:</strong> El análisis semántico comprueba que las construcciones sintácticas obedezcan las reglas lógicas del lenguaje.
+      </div>
+    </section>
+
+    <!-- Slide 3: Arquitectura de Memoria -->
+    <section class="slide">
+      <h2>Arquitectura de Memoria y Estructuras de Datos: Validación Integral de Memoria (Valgrind)</h2>
+      <p class="lead">Auditoría de integridad total del Frontend Semántico:</p>
+      <div class="grid-2">
+        
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent-silver);">Cero Fugas (Zero Leaks)</span><span class="expand-hint">[+]</span></div>
+          <p>Toda la memoria reservada para tokens, nodos AST y tablas temporales debe liberarse limpiamente al terminar.</p>
+          <div class="card-details">Condición obligatoria para acreditar el hito de evaluación.</div>
+        </div>
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent-silver);">Pruebas de Estrés</span><span class="expand-hint">[+]</span></div>
+          <p>Evaluación de árboles con más de 100 operadores anidados y combinaciones de tipos mixtos.</p>
+          <div class="card-details">Demuestra la solidez y estabilidad del código desarrollado.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: Casos Borde y Antipatrones -->
+    <section class="slide">
+      <h2>Criterios de Rechazo del Hito 1</h2>
+      <p class="lead">Puntos críticos de falla que deben protegerse en la codificación y auditarse en las respuestas del LLM:</p>
+      <div class="card" style="padding: 24px;">
+        <ul style="padding-left: 20px; line-height: 2;">
+          <li><strong>Fallo de segmentación al evaluar expresiones con sintaxis incorrecta o punteros nulos.</strong></li><li><strong>Aceptar operaciones ilegales entre tipos incompatibles sin emitir error semántico.</strong></li><li><strong>Fugas de memoria detectables al destruir el árbol sintáctico.</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Slide 5: El Reto y Entregables -->
+    <section class="slide">
+      <h2>Dinámica del Laboratorio y Protocolo de Entrega</h2>
       <div class="grid-2">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span>Estructura de la Clase (60 min)</span><span class="expand-hint">[+]</span></div>
           <ul>
-            <li><strong>00–20 min:</strong> Fundamento conceptual y casos de borde.</li>
-            <li><strong>20–35 min:</strong> Fase 1: El Artesano (Código manual).</li>
+            <li><strong>00–20 min:</strong> Estudio inicial e invariantes teóricas.</li>
+            <li><strong>20–35 min:</strong> Fase 1: El Artesano (Código manual sin IA).</li>
             <li><strong>35–45 min:</strong> Fase 2: El Científico (Prompt C-R-E-O).</li>
             <li><strong>45–55 min:</strong> Fase 3: El Auditor (Test Harness).</li>
             <li><strong>55–60 min:</strong> Sincronización y commit en GitHub.</li>
           </ul>
-          <div class="card-details">Asegúrate de ejecutar todas las pruebas unitarias antes de guardar tu bitácora.</div>
+          <div class="card-details">Verifica que el Test Harness termine en verde antes de hacer commit.</div>
         </div>
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span>Evidencia Evaluada</span><span class="expand-hint">[+]</span></div>
-          <p>Tu archivo <code>auditorias/auditoria_sesion10.md</code> debe contener la matriz C-R-E-O y el reporte crítico de pruebas.</p>
-          <div class="card-details">El progreso acumulado cuenta para el 40% de laboratorios y alimenta tu Proyecto Integrador.</div>
+          <p>Tu archivo <code>auditorias/auditoria_sesion10.md</code> debe contener la matriz C-R-E-O y el reporte crítico.</p>
+          <div class="card-details">Cada entrega diaria acumula para el 40% de laboratorios y alimenta tu Proyecto Integrador.</div>
         </div>
       </div>
       <div class="interactive-box">
@@ -93,13 +232,15 @@
       </div>
     </section>
   </main>
+
   <footer>
-    <div class="progress" id="slideIndicator">SLIDE 1 / 2</div>
+    <div class="progress" id="slideIndicator">SLIDE 1 / 5</div>
     <div class="controls">
       <button id="prevBtn" onclick="prevSlide()" disabled>&larr; Anterior</button>
       <button id="nextBtn" onclick="nextSlide()">Siguiente &rarr;</button>
     </div>
   </footer>
+
   <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');

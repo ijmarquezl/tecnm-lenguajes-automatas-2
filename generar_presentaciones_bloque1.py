@@ -1,11 +1,52 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""
+Compilador de Presentaciones Enriquecidas (Bloque 1: Sesiones 01 a 10)
+Autor: MCC. Iván Márquez Larios (ijmarquezl)
+TecNM - Campus Cancún
+"""
+
+import os
+from contenido_teorico_bloque1 import TEORIA_BLOQUE_1
+
+def compilar_presentacion_5_slides(num, data):
+    n_str = f"{num:02d}"
+    tema = data["tema"]
+    unidad = data["unidad"]
+    tp = data["teoria_principal"]
+    am = data["arquitectura_memoria"]
+    cb = data["casos_borde"]
+
+    # Generar tarjetas de Slide 2 (Teoría)
+    cards_s2 = ""
+    for t_tit, t_desc, t_det in tp["tarjetas"]:
+        cards_s2 += f"""
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent);">{t_tit}</span><span class="expand-hint">[+]</span></div>
+          <p>{t_desc}</p>
+          <div class="card-details">{t_det}</div>
+        </div>"""
+
+    # Generar tarjetas de Slide 3 (Arquitectura)
+    cards_s3 = ""
+    for a_tit, a_desc, a_det in am["tarjetas"]:
+        cards_s3 += f"""
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent-silver);">{a_tit}</span><span class="expand-hint">[+]</span></div>
+          <p>{a_desc}</p>
+          <div class="card-details">{a_det}</div>
+        </div>"""
+
+    # Generar lista de Slide 4 (Casos borde)
+    items_s4 = "".join([f"<li><strong>{item}</strong></li>" for item in cb["items"]])
+
+    html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sesión 02: Gestión en GitHub Web y Nodos Dinámicos en Heap | Lenguajes y Autómatas II</title>
+  <title>Sesión {n_str}: {tema} | Lenguajes y Autómatas II</title>
   <style>
-    :root {
+    :root {{
       --bg: #f4f8fb;
       --card-bg: rgba(255, 255, 255, 0.88);
       --card-bg-hover: rgba(255, 255, 255, 0.98);
@@ -18,9 +59,9 @@
       --text: #334155;
       --text-bright: #0f172a;
       --font-mono: 'Fira Code', monospace;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    }}
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{
       background-color: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -28,8 +69,8 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-    }
-    header {
+    }}
+    header {{
       padding: 12px 28px;
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(8px);
@@ -37,9 +78,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .brand { font-weight: 700; color: var(--text-bright); font-size: 0.95rem; }
-    .tag {
+    }}
+    .brand {{ font-weight: 700; color: var(--text-bright); font-size: 0.95rem; }}
+    .tag {{
       background-color: #ddf4ff;
       color: var(--accent);
       padding: 4px 12px;
@@ -48,9 +89,9 @@
       font-family: var(--font-mono);
       font-weight: 600;
       border: 1px solid #b6e3ff;
-    }
-    main { flex: 1; display: flex; position: relative; overflow: hidden; }
-    .slide {
+    }}
+    main {{ flex: 1; display: flex; position: relative; overflow: hidden; }}
+    .slide {{
       position: absolute;
       inset: 0;
       padding: 30px 60px;
@@ -61,14 +102,14 @@
       visibility: hidden;
       transform: translateX(30px);
       transition: all 0.3s ease;
-    }
-    .slide.active { opacity: 1; visibility: visible; transform: translateX(0); }
-    h1 { font-size: 2rem; color: var(--text-bright); margin-bottom: 12px; }
-    h2 { font-size: 1.5rem; color: var(--text-bright); margin-bottom: 16px; }
-    p.lead { font-size: 1.05rem; line-height: 1.5; max-width: 900px; margin-bottom: 18px; color: #475569; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .card {
+    }}
+    .slide.active {{ opacity: 1; visibility: visible; transform: translateX(0); }}
+    h1 {{ font-size: 2rem; color: var(--text-bright); margin-bottom: 12px; }}
+    h2 {{ font-size: 1.5rem; color: var(--text-bright); margin-bottom: 16px; }}
+    p.lead {{ font-size: 1.05rem; line-height: 1.5; max-width: 900px; margin-bottom: 18px; color: #475569; }}
+    .grid-3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }}
+    .grid-2 {{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }}
+    .card {{
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -77,15 +118,15 @@
       transition: all 0.25s ease;
       display: flex;
       flex-direction: column;
-    }
-    .card:hover { background: var(--card-bg-hover); border-color: var(--border-focus); transform: translateY(-2px); }
-    .card.expanded { border-color: var(--accent); background: #ffffff; }
-    .card-header { font-weight: 600; color: var(--text-bright); margin-bottom: 8px; display: flex; justify-content: space-between; }
-    .expand-hint { font-size: 0.75rem; color: var(--accent); font-family: var(--font-mono); }
-    .card p, .card li { font-size: 0.88rem; line-height: 1.45; color: var(--text); }
-    .card-details { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease; font-size: 0.82rem; color: #475569; }
-    .card.expanded .card-details { max-height: 240px; opacity: 1; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
-    .interactive-box {
+    }}
+    .card:hover {{ background: var(--card-bg-hover); border-color: var(--border-focus); transform: translateY(-2px); }}
+    .card.expanded {{ border-color: var(--accent); background: #ffffff; }}
+    .card-header {{ font-weight: 600; color: var(--text-bright); margin-bottom: 8px; display: flex; justify-content: space-between; }}
+    .expand-hint {{ font-size: 0.75rem; color: var(--accent); font-family: var(--font-mono); }}
+    .card p, .card li {{ font-size: 0.88rem; line-height: 1.45; color: var(--text); }}
+    .card-details {{ max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease; font-size: 0.82rem; color: #475569; }}
+    .card.expanded .card-details {{ max-height: 240px; opacity: 1; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }}
+    .interactive-box {{
       margin-top: 18px;
       padding: 14px 18px;
       background: #ffffff;
@@ -94,18 +135,18 @@
       border-radius: 6px;
       font-family: var(--font-mono);
       font-size: 0.85rem;
-    }
-    footer {
+    }}
+    footer {{
       padding: 12px 28px;
       background: rgba(255, 255, 255, 0.85);
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .progress { font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600; }
-    .controls { display: flex; gap: 10px; }
-    button {
+    }}
+    .progress {{ font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600; }}
+    .controls {{ display: flex; gap: 10px; }}
+    button {{
       background: #ffffff;
       color: var(--text-bright);
       border: 1px solid var(--border);
@@ -113,23 +154,23 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
-    }
-    button:hover { background: #f1f5f9; }
-    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    }}
+    button:hover {{ background: #f1f5f9; }}
+    button:disabled {{ opacity: 0.4; cursor: not-allowed; }}
   </style>
 </head>
 <body>
   <header>
     <div class="brand">TecNM Cancún &bull; SCD-1016</div>
-    <div class="tag">SESIÓN 02 / 40 &bull; Gestión en GitHub Web y Nodos Dinámicos en Heap</div>
+    <div class="tag">SESIÓN {n_str} / 40 &bull; {tema}</div>
   </header>
 
   <main>
     <!-- Slide 1: Portada y Propósito -->
     <section class="slide active">
-      <div class="tag" style="width: fit-content; margin-bottom: 10px;">UNIDAD 1: ANÁLISIS SEMÁNTICO Y AST</div>
-      <h1>Gestión en GitHub Web y Nodos Dinámicos en Heap</h1>
-      <p class="lead">Sesión 02 del curso. Exploración conceptual, diseño de estructuras en memoria y auditoría técnica mediante la Tríada Metodológica.</p>
+      <div class="tag" style="width: fit-content; margin-bottom: 10px;">{unidad.upper()}</div>
+      <h1>{tema}</h1>
+      <p class="lead">Sesión {n_str} del curso. Exploración conceptual, diseño de estructuras en memoria y auditoría técnica mediante la Tríada Metodológica.</p>
       <div class="grid-3">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span style="color: var(--accent);">01. El Artesano</span><span class="expand-hint">[+]</span></div>
@@ -151,25 +192,10 @@
 
     <!-- Slide 2: Fundamentos Teóricos -->
     <section class="slide">
-      <h2>00–20 min: Fundamentos Teóricos — Estructuras Dinámicas para Tokens y Símbolos</h2>
-      <p class="lead">El compilador no conoce a priori el tamaño del programa. Cada token o nodo debe instanciarse dinámicamente en el Heap.</p>
+      <h2>00–20 min: Fundamentos Teóricos — {tp["titulo"]}</h2>
+      <p class="lead">{tp["lead"]}</p>
       <div class="grid-3">
-        
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent);">01. Asignación Dinámica</span><span class="expand-hint">[+]</span></div>
-          <p>`malloc(sizeof(Token))` reserva memoria contigua en el Heap y devuelve un puntero genérico `void*`.</p>
-          <div class="card-details">El sistema operativo marca el bloque como ocupado en la tabla de páginas.</div>
-        </div>
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent);">02. Tiempo de Vida (Lifetime)</span><span class="expand-hint">[+]</span></div>
-          <p>A diferencia del Stack (que se limpia al salir de la función), la memoria en Heap persiste hasta invocar `free()`.</p>
-          <div class="card-details">Olvidar liberar memoria genera *Memory Leaks* que saturan la compilación de programas extensos.</div>
-        </div>
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent);">03. Enlazamiento Simple</span><span class="expand-hint">[+]</span></div>
-          <p>Cada nodo contiene su carga útil (lexema, tipo) y un puntero autoreferenciado `struct Token *siguiente`.</p>
-          <div class="card-details">Permite construir flujos de tokens de longitud arbitraria O(n).</div>
-        </div>
+        {cards_s2}
       </div>
       <div class="interactive-box">
         <strong>Invariante Conceptual:</strong> El análisis semántico comprueba que las construcciones sintácticas obedezcan las reglas lógicas del lenguaje.
@@ -178,30 +204,20 @@
 
     <!-- Slide 3: Arquitectura de Memoria -->
     <section class="slide">
-      <h2>Arquitectura de Memoria y Estructuras de Datos: El Ciclo de Liberación Segura</h2>
-      <p class="lead">Prevención del fallo crítico *Use-After-Free*:</p>
+      <h2>Arquitectura de Memoria y Estructuras de Datos: {am["titulo"]}</h2>
+      <p class="lead">{am["descripcion"]}</p>
       <div class="grid-2">
-        
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent-silver);">Puntero Auxiliar Temporal</span><span class="expand-hint">[+]</span></div>
-          <p>Antes de ejecutar `free(actual)`, es indispensable respaldar `actual->siguiente` en una variable temporal.</p>
-          <div class="card-details">Acceder a `actual->siguiente` después de liberar `actual` es comportamiento indefinido (UB).</div>
-        </div>
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent-silver);">Modelo RAII en Rust</span><span class="expand-hint">[+]</span></div>
-          <p>`Box<Token>` transfiere la propiedad; cuando el nodo sale de ámbito, Rust invoca `drop()` automáticamente.</p>
-          <div class="card-details">Elimina por completo fugas de memoria y punteros colgantes en tiempo de compilación.</div>
-        </div>
+        {cards_s3}
       </div>
     </section>
 
     <!-- Slide 4: Casos Borde y Antipatrones -->
     <section class="slide">
-      <h2>Antipatrones en la Gestión de Nodos</h2>
+      <h2>{cb["titulo"]}</h2>
       <p class="lead">Puntos críticos de falla que deben protegerse en la codificación y auditarse en las respuestas del LLM:</p>
       <div class="card" style="padding: 24px;">
         <ul style="padding-left: 20px; line-height: 2;">
-          <li><strong>Desbordamiento en copia de lexema: Usar `strcpy` en lugar de `strncpy` provocando buffer overflow.</strong></li><li><strong>Fallo de asignación: No verificar si `malloc` retornó `NULL` por agotamiento de memoria del sistema.</strong></li><li><strong>Liberación de lista vacía: No proteger la función de liberación cuando la cabeza de la lista es `NULL`.</strong></li>
+          {items_s4}
         </ul>
       </div>
     </section>
@@ -223,7 +239,7 @@
         </div>
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span>Evidencia Evaluada</span><span class="expand-hint">[+]</span></div>
-          <p>Tu archivo <code>auditorias/auditoria_sesion02.md</code> debe contener la matriz C-R-E-O y el reporte crítico.</p>
+          <p>Tu archivo <code>auditorias/auditoria_sesion{n_str}.md</code> debe contener la matriz C-R-E-O y el reporte crítico.</p>
           <div class="card-details">Cada entrega diaria acumula para el 40% de laboratorios y alimenta tu Proyecto Integrador.</div>
         </div>
       </div>
@@ -247,23 +263,40 @@
     const indicator = document.getElementById('slideIndicator');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    function updateSlides() {
+    function updateSlides() {{
       slides.forEach((slide, index) => slide.classList.toggle('active', index === currentSlide));
-      indicator.textContent = `SLIDE ${currentSlide + 1} / ${slides.length}`;
+      indicator.textContent = `SLIDE ${{currentSlide + 1}} / ${{slides.length}}`;
       prevBtn.disabled = currentSlide === 0;
       nextBtn.disabled = currentSlide === slides.length - 1;
-    }
-    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlides(); } }
-    function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlides(); } }
-    function toggleCard(card) {
+    }}
+    function nextSlide() {{ if (currentSlide < slides.length - 1) {{ currentSlide++; updateSlides(); }} }}
+    function prevSlide() {{ if (currentSlide > 0) {{ currentSlide--; updateSlides(); }} }}
+    function toggleCard(card) {{
       card.classList.toggle('expanded');
       const hint = card.querySelector('.expand-hint');
       if (hint) hint.textContent = card.classList.contains('expanded') ? '[-]' : '[+]';
-    }
-    document.addEventListener('keydown', (e) => {
+    }}
+    document.addEventListener('keydown', (e) => {{
       if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
       if (e.key === 'ArrowLeft') prevSlide();
-    });
+    }});
   </script>
 </body>
 </html>
+"""
+    return html
+
+def main():
+    print("🚀 Compilando presentaciones enriquecidas (Sesiones 01 a 10)...")
+    os.makedirs("presentaciones", exist_ok=True)
+    for num, data in TEORIA_BLOQUE_1.items():
+        n_str = f"{num:02d}"
+        html_content = compilar_presentacion_5_slides(num, data)
+        out_path = f"presentaciones/sesion{n_str}.html"
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        print(f"  -> Generada: {out_path} (5 slides completos)")
+    print("✅ Bloque 1 de presentaciones actualizado con éxito.")
+
+if __name__ == "__main__":
+    main()
