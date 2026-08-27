@@ -1,59 +1,54 @@
 # Bitácora de Requerimientos y Auditoría IA — Sesión 01
 **Materia:** Lenguajes y Autómatas II (SCD-1016)  
+**Tema:** Encuadre, Diagnóstico de Punteros y Metodología IA  
+**Docente Titular:** MCC. Iván Márquez Larios (`ijmarquezl`)  
 **Estudiante:** [Nombre Completo]  
 **Matrícula:** [No. de Control]  
-**Fecha:** [AAAA-MM-DD]  
 **Track:** [ C | Rust ]  
 
 ---
 
-## 1. Fase 1: El Artesano (Intuición y Dificultad Manual)
-*Describe el reto de memoria/punteros que identificaste al intentar resolver el problema a mano sin ayuda de IA:*
-> (Ejemplo: Al mover el puntero fin con `str + strlen(str) - 1`, me encontré con un acceso fuera de límites si la cadena estaba vacía).
+## 1. Fase 1: El Artesano (Dificultad Manual)
+*Reto:* Inversión de buffer in-place (char*)  
+*Describe qué problema o restricción de memoria/sintaxis identificaste al codificar a mano:*
+> 
 
 ---
 
-## 2. Fase 2: El Científico (Ingeniería de Requerimientos y Contexto)
+## 2. Fase 2: El Científico (Ingeniería de Requerimientos C-R-E-O)
 
-### 2.1 Matriz de Especificación y Casos Borde
-Completa el contrato formal antes de redactar tu prompt:
-
-| Dimensión | Especificación Técnica Formal |
+### 2.1 Matriz de Especificación Formal
+| Elemento C-R-E-O | Definición Técnica |
 | :--- | :--- |
-| **Firma de la función** | `void invertir_cadena(char *str)` (o firma equivalente en Rust) |
-| **Precondiciones** | El puntero debe apuntar a memoria modificable (*Heap* o *Stack*), o manejar `NULL`. |
-| **Postcondiciones** | La cadena original queda invertida in-place; $O(n)$ tiempo, $O(1)$ memoria auxiliar. |
-| **Restricciones de Entorno** | C99 / GCC, sin bibliotecas externas, sin `malloc`, sin usar arreglos auxiliares. |
-| **Casos Límite a Proteger** | 1. Puntero `NULL`, 2. Cadena vacía `""`, 3. Longitud par/impar, 4. Búfer de 1 caracter. |
+| **Contexto (C)** | C99 / GCC o Rust 2021 sin bibliotecas no estándar |
+| **Rol (R)** | Ingeniero de software de sistemas y compiladores |
+| **Especificación (E)** | Punteros, O(n) tiempo, O(1) memoria |
+| **Output (O)** | Solo código modular y análisis de complejidad |
 
-### 2.2 Diseño del Prompt Contextualizado
-*Pega aquí el prompt estructurado que construiste utilizando la matriz anterior:*
-
+### 2.2 Prompt Estructurado
 ```text
-[Pega tu prompt con Rol, Contexto de memoria, Especificación y Restricciones explícitas]
+[Pega aquí el prompt formal que redactaste para la IA]
 ```
-## 3. Código devuelto por el modelo
-*Pega aquí el fragmento de código generado por el LLM:*
-```code
-C
+
+---
+
+## 3. Código Devuelto por el Modelo
+```c
+// Código devuelto por el LLM
 ```
-## 4. Fase 3: El Auditor (Batería de Pruebas y Veredicto)
 
-### 4.1 Resultados del Test Harness
-Indica si el código generado superó las pruebas de estrés ejecutadas en Colab:
-```text
-[ ] Puntero Nulo (NULL): ¿Sobrevive sin Segmentation Fault?
+---
 
-[ ] Cadena vacía (""): ¿Mantiene el terminador nulo sin alterar memoria?
+## 4. Fase 3: El Auditor (Resultados del Test Harness)
+*Pruebas ejecutadas:* Valores NULL, buffers vacios y longitudes impares
 
-[ ] Cadena de 1 caracter ("A"): ¿Evita cruces inválidos de punteros?
+* [ ] Caso base y límites superados sin *Crash*.
+* [ ] No existen accesos fuera de límites ni *Memory Leaks*.
+* [ ] La complejidad teórica coincide con la implementada.
 
-[ ] Longitud Par e Impar ("AB", "ABC"): ¿Invierte correctamente todos los índices?
-```
-### 4.2 Reporte Crítico y Correcciones
-¿Qué caso límite o problema de arquitectura omitió la IA y cómo lo solucionaste en tu versión final?
-```text
-(Describe tu análisis y corrección aquí).
+### Reporte Crítico
+*¿Qué caso borde o problema omitió la IA y cómo lo solucionaste?*
+> 
 
-Firma digital: [Usuario de GitHub]
-```
+---
+**Firma digital:** [Usuario de GitHub]

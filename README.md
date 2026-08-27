@@ -1,47 +1,80 @@
 # Lenguajes y Autómatas II (SCD-1016)
 
-Repositorio oficial y entorno de laboratorio interactivo para el curso de **Lenguajes y Autómatas II** del Tecnológico Nacional de México / Instituto Tecnológico de Cancún.
+Repositorio oficial del curso de **Lenguajes y Autómatas II** del Tecnológico Nacional de México / Instituto Tecnológico de Cancún.
+
+**Docente Titular:** MCC. Iván Márquez Larios (`ijmarquezl`)
 
 ---
 
 ## 🚀 Flujo de Trabajo en la Nube (100% en Navegador)
-
-1. **Crear tu copia de trabajo:** Haz clic en el botón **`Fork`** (arriba a la derecha) para duplicar este repositorio en tu cuenta personal.
-2. **Identifícate:** Edita el archivo `README.md` de tu Fork colocando tu nombre completo, matrícula y track seleccionado (C o Rust).
-3. **Ejecutar Laboratorios:** Haz clic en los botones **"Open in Colab"** correspondientes a cada sesión.
-4. **Auditoría IA:** Copia la plantilla correspondiente desde `plantillas/`, crea tu archivo en `auditorias/` y documenta tu bitácora crítica antes de realizar el commit.
+1. Realiza un **Fork** de este repositorio a tu cuenta personal de GitHub.
+2. Abre la sesión correspondiente con el botón **Open in Colab**.
+3. Sigue el ciclo **El Artesano** $\to$ **El Científico** $\to$ **El Auditor**.
+4. Copia la plantilla de `plantillas/auditoria_sesionXX.md` a `auditorias/auditoria_sesionXX.md` en tu Fork y realiza el commit.
 
 ---
 
-## 📚 Módulos y Sesiones
+## 🏗️ Proyecto Integrador Semestral (30%)
+* **Hito 1 (Sesión 10):** Mini-Evaluador y Frontend Semántico (AST + Tipos).
+* **Hito 2 (Sesión 20):** Tabla de Símbolos Jerárquica y Gestión de Scopes.
+* **Hito 3 (Sesión 30):** Generador de Código de Tres Direcciones (TAC) Optimizado.
+* **Hito 4 (Sesión 40):** Backend, Generación de Ensamblador y Binario ELF Final.
 
-### Semana 1: Inducción y Fundamentos de Análisis Semántico
+---
 
-| Sesión | Tema Principal | Presentación Interactiva | Cuaderno de Laboratorio |
+## 📚 Índice General de las 40 Sesiones
+
+| Sesión | Tema Principal | Presentación | Laboratorio |
 | :--- | :--- | :---: | :---: |
-| **Sesión 01** | Encuadre, Diagnóstico de Punteros y Protocolo IA | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion01.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion01/sesion01_laboratorio.ipynb) |
-| **Sesión 02** | Gestión en GitHub Web y Memoria Dinámica (Nodos) | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion02.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion02/sesion02_laboratorio.ipynb) |
+| **Sesión 01** | Encuadre, Diagnóstico de Punteros y Metodología IA | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion01.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion01/sesion01_laboratorio.ipynb) |
+| **Sesión 02** | Gestión en GitHub Web y Nodos Dinámicos | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion02.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion02/sesion02_laboratorio.ipynb) |
+| **Sesión 03** | Google Colab, Mágicos y Flujo de Entrega | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion03.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion03/sesion03_laboratorio.ipynb) |
+| **Sesión 04** | Anatomía de un Árbol Sintáctico (AST) | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion04.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion04/sesion04_laboratorio.ipynb) |
+| **Sesión 05** | Recorridos del AST y Notación Polaca | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion05.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion05/sesion05_laboratorio.ipynb) |
+| **Sesión 06** | Sistema de Tipos Primitivos | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion06.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion06/sesion06_laboratorio.ipynb) |
+| **Sesión 07** | Evaluación de Expresiones Aritméticas | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion07.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion07/sesion07_laboratorio.ipynb) |
+| **Sesión 08** | Inferencia y Promoción de Tipos | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion08.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion08/sesion08_laboratorio.ipynb) |
+| **Sesión 09** | Reporte Formal de Errores Semánticos | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion09.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion09/sesion09_laboratorio.ipynb) |
+| **Sesión 10** | Hito 1: Mini-Evaluador de Expresiones | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion10.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion10/sesion10_laboratorio.ipynb) |
+| **Sesión 11** | Arquitectura de la Tabla de Símbolos | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion11.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion11/sesion11_laboratorio.ipynb) |
+| **Sesión 12** | Atributos de Símbolos y Memoria | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion12.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion12/sesion12_laboratorio.ipynb) |
+| **Sesión 13** | Manejo de Ámbitos (Scope Global/Local) | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion13.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion13/sesion13_laboratorio.ipynb) |
+| **Sesión 14** | Declaración vs Uso de Variables | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion14.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion14/sesion14_laboratorio.ipynb) |
+| **Sesión 15** | Bloques Anidados y Ciclo de Vida | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion15.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion15/sesion15_laboratorio.ipynb) |
+| **Sesión 16** | Firmas de Función y Parámetros | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion16.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion16/sesion16_laboratorio.ipynb) |
+| **Sesión 17** | Comprobación Semántica de Retornos | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion17.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion17/sesion17_laboratorio.ipynb) |
+| **Sesión 18** | Arreglos y Verificación de Límites | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion18.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion18/sesion18_laboratorio.ipynb) |
+| **Sesión 19** | Estructuras (struct) y Miembros | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion19.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion19/sesion19_laboratorio.ipynb) |
+| **Sesión 20** | Hito 2: Analizador Semántico y Scopes | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion20.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion20/sesion20_laboratorio.ipynb) |
+| **Sesión 21** | Fundamentos de Código de 3 Direcciones | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion21.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion21/sesion21_laboratorio.ipynb) |
+| **Sesión 22** | Generación de TAC para Expresiones | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion22.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion22/sesion22_laboratorio.ipynb) |
+| **Sesión 23** | Etiquetas y Saltos Incondicionales | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion23.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion23/sesion23_laboratorio.ipynb) |
+| **Sesión 24** | Control de Flujo: Sentencia if-else | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion24.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion24/sesion24_laboratorio.ipynb) |
+| **Sesión 25** | Control de Flujo: Bucles while y for | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion25.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion25/sesion25_laboratorio.ipynb) |
+| **Sesión 26** | TAC para Llamadas a Funciones | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion26.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion26/sesion26_laboratorio.ipynb) |
+| **Sesión 27** | Indexación de Arreglos en TAC | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion27.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion27/sesion27_laboratorio.ipynb) |
+| **Sesión 28** | Optimización: Constant Folding | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion28.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion28/sesion28_laboratorio.ipynb) |
+| **Sesión 29** | Optimización: Dead Code Elimination | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion29.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion29/sesion29_laboratorio.ipynb) |
+| **Sesión 30** | Hito 3: Generador de TAC End-to-End | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion30.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion30/sesion30_laboratorio.ipynb) |
+| **Sesión 31** | Introducción a Ensamblador x86-64 | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion31.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion31/sesion31_laboratorio.ipynb) |
+| **Sesión 32** | Asignación Ingenua de Registros | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion32.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion32/sesion32_laboratorio.ipynb) |
+| **Sesión 33** | Derramamiento a Memoria (Spilling) | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion33.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion33/sesion33_laboratorio.ipynb) |
+| **Sesión 34** | Marco de Pila y Prólogo/Epílogo | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion34.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion34/sesion34_laboratorio.ipynb) |
+| **Sesión 35** | Paso de Argumentos por Registro | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion35.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion35/sesion35_laboratorio.ipynb) |
+| **Sesión 36** | Traducción de Comparaciones y Saltos | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion36.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion36/sesion36_laboratorio.ipynb) |
+| **Sesión 37** | Integración de Pipeline del Compilador | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion37.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion37/sesion37_laboratorio.ipynb) |
+| **Sesión 38** | Enlace y Creación de Binarios ELF | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion38.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion38/sesion38_laboratorio.ipynb) |
+| **Sesión 39** | Auditoría de Rendimiento y Memoria | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion39.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion39/sesion39_laboratorio.ipynb) |
+| **Sesión 40** | Hito 4: Demostración Final del Compilador | [Ver Diapositivas](https://ijmarquezl.github.io/tecnm-lenguajes-automatas-2/presentaciones/sesion40.html) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ijmarquezl/tecnm-lenguajes-automatas-2/blob/main/laboratorios/sesion40/sesion40_laboratorio.ipynb) |
 
 ---
 
-## 🛠️ Estructura del Repositorio
+## 📋 Criterios de Evaluación
+* **40% Laboratorios Diarios:** Cuadernos Colab y bitácoras en GitHub.
+* **30% Proyecto Integrador:** Compilador modular funcional (4 hitos).
+* **20% Evaluaciones Prácticas:** 4 hitos prácticos de unidad.
+* **10% Participación Activa:** Sesiones síncronas en MS Teams.
 
-```text
-├── auditorias/
-│   └── (Aquí guardarán los alumnos sus bitácoras completadas)
-├── plantillas/
-│   ├── auditoria_sesion01.md     # Plantilla base para bitácora 01
-│   └── auditoria_sesion02.md     # Plantilla base para bitácora 02
-├── laboratorios/
-│   ├── sesion01/
-│   │   └── sesion01_laboratorio.ipynb  # Práctica 01 en Google Colab
-│   └── sesion02/
-│       └── sesion02_laboratorio.ipynb  # Práctica 02 en Google Colab
-├── presentaciones/
-│   ├── sesion01.html             # Diapositivas interactivas Sesión 01
-│   └── sesion02.html             # Diapositivas interactivas Sesión 02
-└── README.md                     # Portal de acceso e instrucciones
-
-## Licencia
-* El código fuente de laboratorios y utilidades está bajo la [Licencia MIT](LICENSE).
-* El material didáctico, notas y presentaciones están bajo la licencia [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+---
+**Docente Titular:** MCC. Iván Márquez Larios (`ijmarquezl`)  
+**Tecnológico Nacional de México — Campus Cancún**
