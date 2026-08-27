@@ -1,11 +1,49 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""
+Compilador de Presentaciones Enriquecidas (Bloque 2: Sesiones 11 a 20)
+Autor: MCC. Iván Márquez Larios (ijmarquezl)
+TecNM - Campus Cancún
+"""
+
+import os
+from contenido_teorico_bloque2 import TEORIA_BLOQUE_2
+
+def compilar_presentacion_5_slides(num, data):
+    n_str = f"{num:02d}"
+    tema = data["tema"]
+    unidad = data["unidad"]
+    tp = data["teoria_principal"]
+    am = data["arquitectura_memoria"]
+    cb = data["casos_borde"]
+
+    cards_s2 = ""
+    for t_tit, t_desc, t_det in tp["tarjetas"]:
+        cards_s2 += f"""
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent);">{t_tit}</span><span class="expand-hint">[+]</span></div>
+          <p>{t_desc}</p>
+          <div class="card-details">{t_det}</div>
+        </div>"""
+
+    cards_s3 = ""
+    for a_tit, a_desc, a_det in am["tarjetas"]:
+        cards_s3 += f"""
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent-silver);">{a_tit}</span><span class="expand-hint">[+]</span></div>
+          <p>{a_desc}</p>
+          <div class="card-details">{a_det}</div>
+        </div>"""
+
+    items_s4 = "".join([f"<li><strong>{item}</strong></li>" for item in cb["items"]])
+
+    html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sesión 16: Firmas de Función y Parámetros Formales | Lenguajes y Autómatas II</title>
+  <title>Sesión {n_str}: {tema} | Lenguajes y Autómatas II</title>
   <style>
-    :root {
+    :root {{
       --bg: #f4f8fb;
       --card-bg: rgba(255, 255, 255, 0.88);
       --card-bg-hover: rgba(255, 255, 255, 0.98);
@@ -18,9 +56,9 @@
       --text: #334155;
       --text-bright: #0f172a;
       --font-mono: 'Fira Code', monospace;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    }}
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{
       background-color: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -28,8 +66,8 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-    }
-    header {
+    }}
+    header {{
       padding: 12px 28px;
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(8px);
@@ -37,9 +75,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .brand { font-weight: 700; color: var(--text-bright); font-size: 0.95rem; }
-    .tag {
+    }}
+    .brand {{ font-weight: 700; color: var(--text-bright); font-size: 0.95rem; }}
+    .tag {{
       background-color: #ddf4ff;
       color: var(--accent);
       padding: 4px 12px;
@@ -48,9 +86,9 @@
       font-family: var(--font-mono);
       font-weight: 600;
       border: 1px solid #b6e3ff;
-    }
-    main { flex: 1; display: flex; position: relative; overflow: hidden; }
-    .slide {
+    }}
+    main {{ flex: 1; display: flex; position: relative; overflow: hidden; }}
+    .slide {{
       position: absolute;
       inset: 0;
       padding: 30px 60px;
@@ -61,14 +99,14 @@
       visibility: hidden;
       transform: translateX(30px);
       transition: all 0.3s ease;
-    }
-    .slide.active { opacity: 1; visibility: visible; transform: translateX(0); }
-    h1 { font-size: 2rem; color: var(--text-bright); margin-bottom: 12px; }
-    h2 { font-size: 1.5rem; color: var(--text-bright); margin-bottom: 16px; }
-    p.lead { font-size: 1.05rem; line-height: 1.5; max-width: 900px; margin-bottom: 18px; color: #475569; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .card {
+    }}
+    .slide.active {{ opacity: 1; visibility: visible; transform: translateX(0); }}
+    h1 {{ font-size: 2rem; color: var(--text-bright); margin-bottom: 12px; }}
+    h2 {{ font-size: 1.5rem; color: var(--text-bright); margin-bottom: 16px; }}
+    p.lead {{ font-size: 1.05rem; line-height: 1.5; max-width: 900px; margin-bottom: 18px; color: #475569; }}
+    .grid-3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }}
+    .grid-2 {{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }}
+    .card {{
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -77,15 +115,15 @@
       transition: all 0.25s ease;
       display: flex;
       flex-direction: column;
-    }
-    .card:hover { background: var(--card-bg-hover); border-color: var(--border-focus); transform: translateY(-2px); }
-    .card.expanded { border-color: var(--accent); background: #ffffff; }
-    .card-header { font-weight: 600; color: var(--text-bright); margin-bottom: 8px; display: flex; justify-content: space-between; }
-    .expand-hint { font-size: 0.75rem; color: var(--accent); font-family: var(--font-mono); }
-    .card p, .card li { font-size: 0.88rem; line-height: 1.45; color: var(--text); }
-    .card-details { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease; font-size: 0.82rem; color: #475569; }
-    .card.expanded .card-details { max-height: 240px; opacity: 1; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
-    .interactive-box {
+    }}
+    .card:hover {{ background: var(--card-bg-hover); border-color: var(--border-focus); transform: translateY(-2px); }}
+    .card.expanded {{ border-color: var(--accent); background: #ffffff; }}
+    .card-header {{ font-weight: 600; color: var(--text-bright); margin-bottom: 8px; display: flex; justify-content: space-between; }}
+    .expand-hint {{ font-size: 0.75rem; color: var(--accent); font-family: var(--font-mono); }}
+    .card p, .card li {{ font-size: 0.88rem; line-height: 1.45; color: var(--text); }}
+    .card-details {{ max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease; font-size: 0.82rem; color: #475569; }}
+    .card.expanded .card-details {{ max-height: 240px; opacity: 1; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }}
+    .interactive-box {{
       margin-top: 18px;
       padding: 14px 18px;
       background: #ffffff;
@@ -94,18 +132,18 @@
       border-radius: 6px;
       font-family: var(--font-mono);
       font-size: 0.85rem;
-    }
-    footer {
+    }}
+    footer {{
       padding: 12px 28px;
       background: rgba(255, 255, 255, 0.85);
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .progress { font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600; }
-    .controls { display: flex; gap: 10px; }
-    button {
+    }}
+    .progress {{ font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600; }}
+    .controls {{ display: flex; gap: 10px; }}
+    button {{
       background: #ffffff;
       color: var(--text-bright);
       border: 1px solid var(--border);
@@ -113,22 +151,22 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
-    }
-    button:hover { background: #f1f5f9; }
-    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    }}
+    button:hover {{ background: #f1f5f9; }}
+    button:disabled {{ opacity: 0.4; cursor: not-allowed; }}
   </style>
 </head>
 <body>
   <header>
     <div class="brand">TecNM Cancún &bull; SCD-1016</div>
-    <div class="tag">SESIÓN 16 / 40 &bull; Firmas de Función y Parámetros Formales</div>
+    <div class="tag">SESIÓN {n_str} / 40 &bull; {tema}</div>
   </header>
 
   <main>
     <section class="slide active">
-      <div class="tag" style="width: fit-content; margin-bottom: 10px;">UNIDAD 2: TABLA DE SÍMBOLOS Y ÁMBITOS</div>
-      <h1>Firmas de Función y Parámetros Formales</h1>
-      <p class="lead">Sesión 16 del curso. Arquitectura interna de tablas de símbolos, resolución de ámbitos y análisis de tipos con la Tríada Metodológica.</p>
+      <div class="tag" style="width: fit-content; margin-bottom: 10px;">{unidad.upper()}</div>
+      <h1>{tema}</h1>
+      <p class="lead">Sesión {n_str} del curso. Arquitectura interna de tablas de símbolos, resolución de ámbitos y análisis de tipos con la Tríada Metodológica.</p>
       <div class="grid-3">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span style="color: var(--accent);">01. El Artesano</span><span class="expand-hint">[+]</span></div>
@@ -149,25 +187,10 @@
     </section>
 
     <section class="slide">
-      <h2>00–20 min: Fundamentos Teóricos — Contrato de Invocación, Aridad y Tipado de Argumentos</h2>
-      <p class="lead">Las funciones son símbolos especiales que transportan una lista ordenada de tipos de entrada y un tipo de retorno.</p>
+      <h2>00–20 min: Fundamentos Teóricos — {tp["titulo"]}</h2>
+      <p class="lead">{tp["lead"]}</p>
       <div class="grid-3">
-        
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent);">01. Aridad (Número de Parámetros)</span><span class="expand-hint">[+]</span></div>
-          <p>La cantidad exacta de argumentos que la función espera recibir en la llamada.</p>
-          <div class="card-details">Llamar a una función con menos o más argumentos de los definidos es un error semántico.</div>
-        </div>
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent);">02. Parámetros Formales como Variables Locales</span><span class="expand-hint">[+]</span></div>
-          <p>Cada parámetro formal se inserta en la tabla de símbolos del cuerpo de la función como una variable local predefinida.</p>
-          <div class="card-details">Tienen offsets específicos asignados según la convención de llamadas de la arquitectura.</div>
-        </div>
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent);">03. Prototipos vs Definición</span><span class="expand-hint">[+]</span></div>
-          <p>Declaración adelantada (*forward declaration*) de la firma antes de la implementación del cuerpo.</p>
-          <div class="card-details">Permite llamadas recursivas y dependencias mutuas entre funciones.</div>
-        </div>
+        {cards_s2}
       </div>
       <div class="interactive-box">
         <strong>Invariante de la Tabla:</strong> Todo identificador debe resolverse en tiempo determinista hacia sus atributos de tipo y memoria.
@@ -175,29 +198,19 @@
     </section>
 
     <section class="slide">
-      <h2>Arquitectura de Memoria y Estructuras de Datos: Modelado de Firmas de Función en C</h2>
-      <p class="lead">Estructura enlazada de tipos de parámetros:</p>
+      <h2>Arquitectura de Memoria y Estructuras de Datos: {am["titulo"]}</h2>
+      <p class="lead">{am["descripcion"]}</p>
       <div class="grid-2">
-        
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent-silver);">Estructura FunctionSignature</span><span class="expand-hint">[+]</span></div>
-          <p>Contiene `Type *tipo_retorno`, `int num_params` y una lista de `ParamEntry *params`.</p>
-          <div class="card-details">Cada `ParamEntry` tiene el nombre del parámetro y su tipo formal verificado.</div>
-        </div>
-        <div class="card" onclick="toggleCard(this)">
-          <div class="card-header"><span style="color: var(--accent-silver);">Mapeo a Registros de Argumentos</span><span class="expand-hint">[+]</span></div>
-          <p>En x86-64 System V, los primeros 6 parámetros se pasan en registros: RDI, RSI, RDX, RCX, R8, R9.</p>
-          <div class="card-details">Los parámetros 7 en adelante se apilan en memoria antes del `call`.</div>
-        </div>
+        {cards_s3}
       </div>
     </section>
 
     <section class="slide">
-      <h2>Errores Semánticos en Funciones</h2>
+      <h2>{cb["titulo"]}</h2>
       <p class="lead">Puntos críticos de falla que deben protegerse en la implementación y auditarse en las respuestas del LLM:</p>
       <div class="card" style="padding: 24px;">
         <ul style="padding-left: 20px; line-height: 2;">
-          <li><strong>Discrepancia de aridad: Invocar una función `suma(int a, int b)` pasando un solo argumento.</strong></li><li><strong>Incompatibilidad de tipos en argumentos: Pasar un puntero donde se requiere un entero.</strong></li><li><strong>Redefinir una función con una firma incompatible con su prototipo previo.</strong></li>
+          {items_s4}
         </ul>
       </div>
     </section>
@@ -218,7 +231,7 @@
         </div>
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span>Evidencia Evaluada</span><span class="expand-hint">[+]</span></div>
-          <p>Tu archivo <code>auditorias/auditoria_sesion16.md</code> debe contener la matriz C-R-E-O y el reporte crítico.</p>
+          <p>Tu archivo <code>auditorias/auditoria_sesion{n_str}.md</code> debe contener la matriz C-R-E-O y el reporte crítico.</p>
           <div class="card-details">La entrega de la Sesión 20 concluye formalmente el Hito 2 del Proyecto Integrador.</div>
         </div>
       </div>
@@ -242,23 +255,40 @@
     const indicator = document.getElementById('slideIndicator');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    function updateSlides() {
+    function updateSlides() {{
       slides.forEach((slide, index) => slide.classList.toggle('active', index === currentSlide));
-      indicator.textContent = `SLIDE ${currentSlide + 1} / ${slides.length}`;
+      indicator.textContent = `SLIDE ${{currentSlide + 1}} / ${{slides.length}}`;
       prevBtn.disabled = currentSlide === 0;
       nextBtn.disabled = currentSlide === slides.length - 1;
-    }
-    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlides(); } }
-    function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlides(); } }
-    function toggleCard(card) {
+    }}
+    function nextSlide() {{ if (currentSlide < slides.length - 1) {{ currentSlide++; updateSlides(); }} }}
+    function prevSlide() {{ if (currentSlide > 0) {{ currentSlide--; updateSlides(); }} }}
+    function toggleCard(card) {{
       card.classList.toggle('expanded');
       const hint = card.querySelector('.expand-hint');
       if (hint) hint.textContent = card.classList.contains('expanded') ? '[-]' : '[+]';
-    }
-    document.addEventListener('keydown', (e) => {
+    }}
+    document.addEventListener('keydown', (e) => {{
       if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
       if (e.key === 'ArrowLeft') prevSlide();
-    });
+    }});
   </script>
 </body>
 </html>
+"""
+    return html
+
+def main():
+    print("🚀 Compilando presentaciones enriquecidas (Bloque 2: Sesiones 11 a 20)...")
+    os.makedirs("presentaciones", exist_ok=True)
+    for num, data in TEORIA_BLOQUE_2.items():
+        n_str = f"{num:02d}"
+        html_content = compilar_presentacion_5_slides(num, data)
+        out_path = f"presentaciones/sesion{n_str}.html"
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        print(f"  -> Generada: {out_path} (5 slides completos)")
+    print("✅ Bloque 2 de presentaciones actualizado con éxito.")
+
+if __name__ == "__main__":
+    main()
