@@ -3,27 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sesión 22: Generación de TAC para Expresiones | Lenguajes y Autómatas II</title>
+  <title>Sesión 22: Generación de TAC para Expresiones Aritmético-Lógicas | Lenguajes y Autómatas II</title>
   <style>
     :root {
-      --bg: #f4f8fb; --card-bg: rgba(255, 255, 255, 0.88); --card-bg-hover: rgba(255, 255, 255, 0.98);
-      --border: #d0dbe5; --border-focus: #0969da; --accent: #0969da; --accent-green: #1a7f37;
-      --accent-silver: #627282; --text: #334155; --text-bright: #0f172a; --font-mono: 'Fira Code', monospace;
+      --bg: #f4f8fb;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-bg-hover: rgba(255, 255, 255, 0.98);
+      --border: #d0dbe5;
+      --border-focus: #0969da;
+      --accent: #0969da;
+      --accent-green: #1a7f37;
+      --accent-silver: #627282;
+      --accent-orange: #d29922;
+      --text: #334155;
+      --text-bright: #0f172a;
+      --font-mono: 'Fira Code', monospace;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-    header { padding: 12px 28px; background: rgba(255, 255, 255, 0.85); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .brand { font-weight: 700; color: var(--text-bright); font-size: 0.95rem; }
-    .tag { background-color: #ddf4ff; color: var(--accent); padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-family: var(--font-mono); font-weight: 600; }
+    .tag {
+      background-color: #ddf4ff;
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      border: 1px solid #b6e3ff;
+    }
     main { flex: 1; display: flex; position: relative; overflow: hidden; }
-    .slide { position: absolute; inset: 0; padding: 30px 60px; display: flex; flex-direction: column; justify-content: center; opacity: 0; visibility: hidden; transform: translateX(30px); transition: all 0.3s ease; }
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 30px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(30px);
+      transition: all 0.3s ease;
+    }
     .slide.active { opacity: 1; visibility: visible; transform: translateX(0); }
     h1 { font-size: 2rem; color: var(--text-bright); margin-bottom: 12px; }
     h2 { font-size: 1.5rem; color: var(--text-bright); margin-bottom: 16px; }
     p.lead { font-size: 1.05rem; line-height: 1.5; max-width: 900px; margin-bottom: 18px; color: #475569; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
     .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 18px; cursor: pointer; transition: all 0.25s ease; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
     .card:hover { background: var(--card-bg-hover); border-color: var(--border-focus); transform: translateY(-2px); }
     .card.expanded { border-color: var(--accent); background: #ffffff; }
     .card-header { font-weight: 600; color: var(--text-bright); margin-bottom: 8px; display: flex; justify-content: space-between; }
@@ -31,11 +85,35 @@
     .card p, .card li { font-size: 0.88rem; line-height: 1.45; color: var(--text); }
     .card-details { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease; font-size: 0.82rem; color: #475569; }
     .card.expanded .card-details { max-height: 240px; opacity: 1; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
-    .interactive-box { margin-top: 18px; padding: 14px 18px; background: #ffffff; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; }
-    footer { padding: 12px 28px; background: rgba(255, 255, 255, 0.85); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .interactive-box {
+      margin-top: 18px;
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    footer {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.85);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .progress { font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600; }
     .controls { display: flex; gap: 10px; }
-    button { background: #ffffff; color: var(--text-bright); border: 1px solid var(--border); padding: 7px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    button {
+      background: #ffffff;
+      color: var(--text-bright);
+      border: 1px solid var(--border);
+      padding: 7px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
     button:hover { background: #f1f5f9; }
     button:disabled { opacity: 0.4; cursor: not-allowed; }
   </style>
@@ -43,49 +121,105 @@
 <body>
   <header>
     <div class="brand">TecNM Cancún &bull; SCD-1016</div>
-    <div class="tag">SESIÓN 22 / 40 &bull; Generación de TAC para Expresiones</div>
+    <div class="tag">SESIÓN 22 / 40 &bull; Generación de TAC para Expresiones Aritmético-Lógicas</div>
   </header>
+
   <main>
     <section class="slide active">
-      <div class="tag" style="width: fit-content; margin-bottom: 10px;">LENGUAJES Y AUTÓMATAS II</div>
-      <h1>Generación de TAC para Expresiones</h1>
-      <p class="lead">Sesión 22 del curso. Aplicación del protocolo de compiladores con la Tríada Metodológica.</p>
+      <div class="tag" style="width: fit-content; margin-bottom: 10px;">UNIDAD 3: CÓDIGO INTERMEDIO Y OPTIMIZACIÓN</div>
+      <h1>Generación de TAC para Expresiones Aritmético-Lógicas</h1>
+      <p class="lead">Sesión 22 del curso. Generación de código intermedio, aplanado de estructuras de control y optimizaciones locales con la Tríada Metodológica.</p>
       <div class="grid-3">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span style="color: var(--accent);">01. El Artesano</span><span class="expand-hint">[+]</span></div>
-          <p>Codificación manual sin IA: <strong>Traductor de nodos AST a TAC</strong>.</p>
-          <div class="card-details">Desarrolla la intuición técnica de bajo nivel y comprende el comportamiento de memoria antes de consultar modelos.</div>
+          <p>Codificación manual sin IA para comprender la manipulación de cuádruplos y temporales.</p>
+          <div class="card-details">Construcción directa de traductores de AST a instrucciones lineales de tres direcciones.</div>
         </div>
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span style="color: var(--accent-silver);">02. El Científico</span><span class="expand-hint">[+]</span></div>
-          <p>Especificación C-R-E-O: <strong>Conservación de precedencia de operadores</strong>.</p>
-          <div class="card-details">Define el contrato formal de pre/postcondiciones y estructura el prompt técnico para el LLM.</div>
+          <p>Especificación de requerimientos C-R-E-O para la emisión atómica de instrucciones intermedias.</p>
+          <div class="card-details">Definición de invariantes en grafos de control, etiquetas y preservación semántica en optimizaciones.</div>
         </div>
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span style="color: var(--accent-green);">03. El Auditor</span><span class="expand-hint">[+]</span></div>
-          <p>Test Harness Automatizado: <strong>Expresiones anidadas con paréntesis</strong>.</p>
-          <div class="card-details">Somete la solución generada por la IA a pruebas destructivas y registra la auditoría crítica en GitHub.</div>
+          <p>Test Harness automatizado para auditar la equivalencia funcional del código optimizado.</p>
+          <div class="card-details">Pruebas destructivas sobre cortocircuito booleano, ciclos anidados y eliminación de código inalcanzable.</div>
         </div>
       </div>
     </section>
+
     <section class="slide">
-      <h2>Dinámica de la Sesión y Entregables</h2>
+      <h2>00–20 min: Fundamentos Teóricos — Aplanado Recursivo del AST en Instrucciones TAC</h2>
+      <p class="lead">El recorrido postorden del AST sintetiza nombres de variables temporales para aplanar la jerarquía de operadores.</p>
+      <div class="grid-3">
+        
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent);">01. Recorrido Postorden Generador</span><span class="expand-hint">[+]</span></div>
+          <p>Evalúa recursivamente las ramas izquierda y derecha, obteniendo sus nombres de retorno, y emite el cuádruplo del operador.</p>
+          <div class="card-details">Garantiza que los operandos estén calculados antes de utilizarlos.</div>
+        </div>
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent);">02. Conservación de Precedencia</span><span class="expand-hint">[+]</span></div>
+          <p>La estructura jerárquica del AST dicta el orden de emisión en TAC sin necesidad de paréntesis explícitos.</p>
+          <div class="card-details">La expresión 'a + b * c' se convierte estrictamente en: '_t0 = b * c' seguido de '_t1 = a + _t0'.</div>
+        </div>
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent);">03. Expresiones Booleanas como Enteros</span><span class="expand-hint">[+]</span></div>
+          <p>Las comparaciones ('<', '==', '!=') generan cuádruplos de asignación condicional o banderas booleanas (0 o 1).</p>
+          <div class="card-details">Permite tratar condiciones lógicas con la misma infraestructura que las operaciones aritméticas.</div>
+        </div>
+      </div>
+      <div class="interactive-box">
+        <strong>Invariante de Código Intermedio:</strong> Toda operación compleja debe aplanarse a instrucciones con a lo sumo dos operandos y un resultado.
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Arquitectura de Memoria y Estructuras de Datos: Sintetización del Atributo 'Lugar' (Place)</h2>
+      <p class="lead">Propagación ascendente de identificadores durante la traducción:</p>
+      <div class="grid-2">
+        
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent-silver);">Atributo char* lugar</span><span class="expand-hint">[+]</span></div>
+          <p>Cada llamada a 'generar_tac(nodo)' retorna una cadena con el nombre de la variable o temporal donde reside el resultado.</p>
+          <div class="card-details">Las hojas devuelven su propio lexema ('x', '42'); los nodos internos devuelven su nuevo temporal ('_t0').</div>
+        </div>
+        <div class="card" onclick="toggleCard(this)">
+          <div class="card-header"><span style="color: var(--accent-silver);">Generador de Nombres (new_temp)</span><span class="expand-hint">[+]</span></div>
+          <p>Función atómica que incrementa un contador global: 'sprintf(buffer, "_t%d", contador++)'.</p>
+          <div class="card-details">Garantiza unicidad de identificadores temporales en toda la unidad de traducción.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Puntos de Falla en Expresiones</h2>
+      <p class="lead">Puntos críticos de falla que deben protegerse en la generación de TAC y auditarse en las respuestas del LLM:</p>
+      <div class="card" style="padding: 24px;">
+        <ul style="padding-left: 20px; line-height: 2;">
+          <li><strong>Inversión del orden de argumentos en operadores asimétricos: emitir '_t0 = b - a' para 'a - b'.</strong></li><li><strong>Desbordamiento de buffer al formatear nombres de temporales con números altos (>10,000).</strong></li><li><strong>Pérdida de la variable temporal devuelta por una rama en llamadas recursivas profundas.</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Dinámica del Laboratorio y Protocolo de Entrega</h2>
       <div class="grid-2">
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span>Estructura de la Clase (60 min)</span><span class="expand-hint">[+]</span></div>
           <ul>
-            <li><strong>00–20 min:</strong> Fundamento conceptual y casos de borde.</li>
-            <li><strong>20–35 min:</strong> Fase 1: El Artesano (Código manual).</li>
+            <li><strong>00–20 min:</strong> Fundamento teórico y aplanado de estructuras.</li>
+            <li><strong>20–35 min:</strong> Fase 1: El Artesano (Código manual sin IA).</li>
             <li><strong>35–45 min:</strong> Fase 2: El Científico (Prompt C-R-E-O).</li>
             <li><strong>45–55 min:</strong> Fase 3: El Auditor (Test Harness).</li>
             <li><strong>55–60 min:</strong> Sincronización y commit en GitHub.</li>
           </ul>
-          <div class="card-details">Asegúrate de ejecutar todas las pruebas unitarias antes de guardar tu bitácora.</div>
+          <div class="card-details">Verifica que las pruebas del Test Harness pasen al 100% antes de subir tu bitácora.</div>
         </div>
         <div class="card" onclick="toggleCard(this)">
           <div class="card-header"><span>Evidencia Evaluada</span><span class="expand-hint">[+]</span></div>
-          <p>Tu archivo <code>auditorias/auditoria_sesion22.md</code> debe contener la matriz C-R-E-O y el reporte crítico de pruebas.</p>
-          <div class="card-details">El progreso acumulado cuenta para el 40% de laboratorios y alimenta tu Proyecto Integrador.</div>
+          <p>Tu archivo <code>auditorias/auditoria_sesion22.md</code> debe contener la matriz C-R-E-O y el reporte crítico.</p>
+          <div class="card-details">La entrega de la Sesión 30 concluye formalmente el Hito 3 del Proyecto Integrador.</div>
         </div>
       </div>
       <div class="interactive-box">
@@ -93,13 +227,15 @@
       </div>
     </section>
   </main>
+
   <footer>
-    <div class="progress" id="slideIndicator">SLIDE 1 / 2</div>
+    <div class="progress" id="slideIndicator">SLIDE 1 / 5</div>
     <div class="controls">
       <button id="prevBtn" onclick="prevSlide()" disabled>&larr; Anterior</button>
       <button id="nextBtn" onclick="nextSlide()">Siguiente &rarr;</button>
     </div>
   </footer>
+
   <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
