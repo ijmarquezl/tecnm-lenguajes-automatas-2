@@ -72,6 +72,7 @@ python3 validar_contenido.py --sesion 7 -v
 * **Hito 3 (Sesión 30):** TAC y optimizaciones.
 * **Hito 4 (Sesión 40):** backend x86-64 y binario ELF.
 
+Guía de trabajo, entregas y evaluación: **[guía del proyecto](proyecto_integrador/docs/guia-proyecto.md)**.
 Reglas, rúbrica, calendario y definición de terminado: **[PROYECTO.md](PROYECTO.md)**.
 El lenguaje y la interfaz de línea de comandos: **[gramática de Lenguajito](proyecto_integrador/docs/gramatica.md)**.
 El arranque (Makefile, CLI y pruebas doradas): **[proyecto_integrador/](proyecto_integrador/)**.

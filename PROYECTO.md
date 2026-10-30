@@ -5,6 +5,8 @@
 Este documento son las **reglas y los requisitos** del proyecto. El lenguaje que
 debes compilar está especificado en
 [`proyecto_integrador/docs/gramatica.md`](proyecto_integrador/docs/gramatica.md).
+Si es tu primera vez, empieza por la guía operativa:
+[`proyecto_integrador/docs/guia-proyecto.md`](proyecto_integrador/docs/guia-proyecto.md).
 
 ---
 
@@ -152,9 +154,9 @@ aplicar dos optimizaciones.
 
 ## 5. Avances
 
-Entre hito y hito hay un **avance** de 2 minutos (3 bullets + commit). No lleva
-calificación propia, pero es requisito para el hito siguiente: si falta, el hito
-siguiente vale **10% menos**.
+Entre hito y hito hay un **avance** de 2 minutos (3 bullets + commit). Se documenta
+en `proyecto_integrador/docs/avances.md`. No lleva calificación propia, pero es
+requisito para el hito siguiente: si falta, el hito siguiente vale **10% menos**.
 
 | Sesión | Qué se presenta |
 | :---: | :--- |
